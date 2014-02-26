@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/watts/Downloads/dotfiles-master'
+let g:netrw_dirhist_2='/Users/watts'
+let g:netrw_dirhist_3='/Users/watts/code/old-code-files/primer'
+let g:netrw_dirhist_4='/Users/watts/code/old-code-files/primer/lib'
+let g:netrw_dirhist_5='/Users/watts/code/old-code-files/primer/lib/primer'
