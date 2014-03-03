@@ -22,8 +22,9 @@ alias kode='cd ~/code/'
 alias kts='tmux ls | awk '\''{print $1}'\'' | sed '\''s/://g'\'' | xargs -I{} tmux kill-session -t {}'
 alias rdb='rake db:migrate && rake db:migrate RAILS_ENV=test'
 alias work='thyme -d'
-alias stop='thyme -s'
-alias rest='thyme -b'
+alias revolt='thyme -s'
+alias more='thyme -dm'
+alias rest='thyme -db'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"

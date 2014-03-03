@@ -14,7 +14,8 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 "let g:ctrlp_map = '<c-q>'
 "jlet g:ctrlp_cmd = 'CtrlQ'
 
-"set clipboard=unnamed
+" set default yank register to machine clipboard
+set clipboard=unnamed
 
 set backspace=indent,eol,start
 
@@ -259,4 +260,3 @@ function! MapCR()
 endfunction
 
 :nnoremap <cr> :call MapCR()<cr>
-

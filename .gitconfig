@@ -1,0 +1,16 @@
+[user]
+	name = Nathaniel Watts
+	email = reg@nathanielwatts.com
+[color]
+	ui = true
+[alias]
+  co = checkout
+  ci = commit
+  cim = commit -m
+  st = status
+  br = branch
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+[core]
+	excludesfile = /Users/watts/.gitignore
