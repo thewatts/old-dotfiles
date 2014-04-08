@@ -11,8 +11,6 @@ set background=dark
 
 " Control-P
 set runtimepath^=~/.vim/bundle/ctrlp.vim
-"let g:ctrlp_map = '<c-q>'
-"jlet g:ctrlp_cmd = 'CtrlQ'
 
 " set default yank register to machine clipboard
 set clipboard=unnamed
@@ -202,9 +200,22 @@ au BufRead,BufNewFile *.thor set filetype=thor
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CtrlP Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = 'tmp$\|\.git$\|\.hg$\|\.svn$\|.rvm$|.bundle$\|vendor'
+
 let g:ctrlp_user_command = 'find %s -type f'
 let g:ctrlp_use_caching = 0
+
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ack Configuration
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
