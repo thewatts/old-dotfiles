@@ -1,5 +1,21 @@
-"PATHOGEN
-execute pathogen#infect()
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#rc()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'airblade/vim-gitgutter'
+Plugin 't9md/vim-ruby-xmpfilter'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'godlygeek/tabular'
+Plugin 'tpope/vim-commentary'
+Plugin 'kien/ctrlp.vim'
+
+filetype plugin indent on
 
 "Want a different map leader than \
 let mapleader = ","
