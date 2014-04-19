@@ -17,14 +17,18 @@ bindkey -v
 #
 #alias go='git checkout '
 alias zues='zeus'
-alias WEEMA='rake db:drop && rake db:create && rake db:migrate'
+alias WEEMA='bake db:drop && bake db:create && bake db:migrate'
+alias WEEMATEST='RAILS_ENV=test rake db:drop && RAILS_ENV=test rake db:create && RAILS_ENV=test rake db:migrate'
 alias kode='cd ~/code/'
 alias kts='tmux ls | awk '\''{print $1}'\'' | sed '\''s/://g'\'' | xargs -I{} tmux kill-session -t {}'
-alias rdb='rake db:migrate && rake db:migrate RAILS_ENV=test'
+alias rdb='bake db:migrate && bake db:test:prepare'
 alias work='thyme -d'
 alias revolt='thyme -s'
 alias more='thyme -dm'
 alias rest='thyme -db'
+alias bake='bundle exec rake'
+alias buard='bundle exec guard'
+alias list='ps aux | grep'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -73,6 +77,8 @@ export PATH=/usr/local/share/npm/bin:$PATH
 
 ## GO
 export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/code/go
+export PATH=$GOPATH/bin:$PATH
 
 ### RVM
 ### Added by the Heroku Toolbelt
@@ -84,8 +90,13 @@ export TERM="screen-256color"
 export BUNDLER_EDITOR=vim
 alias tmux="tmux -2"
 
-export GOPATH=$HOME/code/go
-export PATH=$GOPATH/bin:$PATH
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#source ~/.rvm/scripts/rvm
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-source ~/.rvm/scripts/rvm
+# Guard
+export GUARD_NOTIFY='false'
+
+# RBENV
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/lib/node:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"

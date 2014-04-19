@@ -1,0 +1,7 @@
+set :tmux, true
+set :tmux_theme, "⥀ #[fg=%s]%s"
+
+after do |seconds_left|
+  `terminal-notifier -message "Thyme\'s up!" -title \"Tmux Pomodoro\"`
+  `say -v "Alex" "The work period is over"`
+end

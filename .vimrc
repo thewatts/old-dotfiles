@@ -14,11 +14,20 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-commentary'
 Plugin 'kien/ctrlp.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'nathanaelkane/vim-indent-guides'
 
 filetype plugin indent on
 
 "Want a different map leader than \
 let mapleader = ","
+
+"Indentation Guides\
+set ts=2 sw=2 et
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 
 set t_Co=256
 "colorscheme lucius
@@ -177,6 +186,20 @@ let g:gitgutter_eager = 0
 " Background color is the same as the one defined by the “:hi Normal” line
 hi SignColumn ctermbg=145 guibg=#252c31 gui=NONE
 
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FIX HTML!
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufRead,BufNewFile *.erb  set filetype=mason autoread
+autocmd BufRead,BufNewFile *.html set filetype=mason autoread
+autocmd FileType html setlocal indentkeys-=*<Return>
+
+"Integration with ThymeRB
+""start pomodoro
+nmap <leader>w :!thyme -d<cr>
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
@@ -264,16 +287,13 @@ let g:php_is_enabled = 0
 
 function! HTMLPHPTemplateToggle()
   if g:php_is_enabled
-    :set ft=html
+    :set ft=mason
     let g:php_is_enabled = 0
   else
     :set ft=php
     let g:php_is_enabled = 1
   endif
 endfunction
-
-" Hopefully fix HTML Indentation
-autocmd FileType html setlocal indentkeys-=*<Return>
 
 function! ExecuteGoCode()
   exec ":!clear && go run " . @%
