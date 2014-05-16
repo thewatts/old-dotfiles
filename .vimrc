@@ -18,8 +18,20 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'mileszs/ack.vim'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'tpope/vim-markdown'
+Plugin 'othree/html5.vim'
+Plugin 'tpope/vim-haml'
+Plugin 'fatih/vim-go'
+" Plugin 'Yggdroot/indentLine'
 
 filetype plugin indent on
+
+" GO FMT
+let g:go_fmt_command = "gofmt"
+
+" Indent Line Character
+let g:indentLine_char = '┆'
+let g:indentLine_color_term = 256
 
 "Want a different map leader than \
 let mapleader = ","
@@ -184,7 +196,8 @@ let g:gitgutter_eager = 0
 
 " Added SignColumn used by Vim-gutter to match default BG colour
 " Background color is the same as the one defined by the “:hi Normal” line
-hi SignColumn ctermbg=145 guibg=#252c31 gui=NONE
+" hi SignColumn ctermbg=145 guibg=#252c31 gui=NONE
+highlight SignColumn ctermbg=none
 
 
 
