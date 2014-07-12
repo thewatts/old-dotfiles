@@ -1,5 +1,6 @@
 set nocompatible
 filetype off
+let g:dark_theme = 1
 
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
@@ -22,12 +23,19 @@ Plugin 'tpope/vim-markdown'
 Plugin 'othree/html5.vim'
 Plugin 'tpope/vim-haml'
 Plugin 'fatih/vim-go'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'heartsentwined/vim-emblem'
+Plugin 'thoughtbot/vim-rspec'
 " Plugin 'Yggdroot/indentLine'
 
 filetype plugin indent on
 
 " GO FMT
 let g:go_fmt_command = "gofmt"
+
+" J Builder Syntax Highlighting
+au BufNewFile,BufRead *.json.jbuilder set ft=ruby
 
 " Indent Line Character
 let g:indentLine_char = '┆'
@@ -36,15 +44,22 @@ let g:indentLine_color_term = 256
 "Want a different map leader than \
 let mapleader = ","
 
+" RSpec.vim mappings
+let g:rspec_command = "!bundle exec bin/rspec {spec}"
+let g:rspec_runner = "os_x_iterm"
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
 "Indentation Guides\
 set ts=2 sw=2 et
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 
+"256 Colors
+
 set t_Co=256
-"colorscheme lucius
-colorscheme smyck
-set background=dark
 
 " Control-P
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -179,7 +194,7 @@ imap <c-l> =><space>
 
 "Easy splits and switches over (\v)
 nnoremap <leader>v <C-w>v<C-w><C-w>
-nnoremap <leader>s <C-w>s<C-w><C-w>
+nnoremap <leader>h <C-w>s<C-w><C-w>
 
 "Map escape key to jj -- much faster
 imap jj <esc>
@@ -197,7 +212,6 @@ let g:gitgutter_eager = 0
 " Added SignColumn used by Vim-gutter to match default BG colour
 " Background color is the same as the one defined by the “:hi Normal” line
 " hi SignColumn ctermbg=145 guibg=#252c31 gui=NONE
-highlight SignColumn ctermbg=none
 
 
 
@@ -289,9 +303,32 @@ set guioptions-=T                 " Hide toolbar.
 set guioptions-=r                 " Don't show right scrollbar
 set guioptions-=l                 " Don't show left scrollbar
 
+set nofoldenable    " disable folding
+
 " MARKDOWN
 " disable folding
 let g:vim_markdown_folding_disabled=1
+" set indent to 4
+au FileType python setl sw=4 sts=4 et
+
+function! SwitchColorSchemes()
+  if g:dark_theme
+    colorscheme smyck
+    set background=dark
+    let &colorcolumn=join(range(81,999),",")
+    highlight ColorColumn ctermbg=235 guibg=#2c2d27
+    highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
+    " let g:dark_theme = 0
+  else
+    colorscheme solarized
+    set background=light
+    let &colorcolumn=join(range(81,999),",")
+    highlight ColorColumn ctermbg=230 guibg=#2c2d27
+    highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
+
+    " let g:dark_theme = 1
+  endif
+endfunction
 
 " Easy Switch from HTML/PHP Indentation
 nnoremap <leader>q :call HTMLPHPTemplateToggle()<cr>
@@ -317,6 +354,12 @@ function! MapCR()
   if (&ft=='go')
     :call ExecuteGoCode()
   endif
+  if (&ft=='ruby')
+    :call RunLastSpec()
+  endif
 endfunction
 
 :nnoremap <cr> :call MapCR()<cr>
+
+" Colorscheme Selection
+:call SwitchColorSchemes()
