@@ -1,365 +1,221 @@
-set nocompatible
-filetype off
-let g:dark_theme = 1
-
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#rc()
-
-Plugin 'gmarik/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'airblade/vim-gitgutter'
-Plugin 't9md/vim-ruby-xmpfilter'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-commentary'
-Plugin 'kien/ctrlp.vim'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'mileszs/ack.vim'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'tpope/vim-markdown'
-Plugin 'othree/html5.vim'
-Plugin 'tpope/vim-haml'
-Plugin 'fatih/vim-go'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'heartsentwined/vim-emblem'
-Plugin 'thoughtbot/vim-rspec'
-" Plugin 'Yggdroot/indentLine'
-
-filetype plugin indent on
-
-" GO FMT
-let g:go_fmt_command = "gofmt"
-
-" J Builder Syntax Highlighting
-au BufNewFile,BufRead *.json.jbuilder set ft=ruby
-
-" Indent Line Character
-let g:indentLine_char = '┆'
-let g:indentLine_color_term = 256
-
-"Want a different map leader than \
-let mapleader = ","
-
-" RSpec.vim mappings
-let g:rspec_command = "!bundle exec bin/rspec {spec}"
-let g:rspec_runner = "os_x_iterm"
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-"Indentation Guides\
-set ts=2 sw=2 et
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
-
-"256 Colors
-
-set t_Co=256
-
-" Control-P
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-
-" set default yank register to machine clipboard
-set clipboard=unnamed
-
-set backspace=indent,eol,start
-
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<
-
-"For ERB  & HTML Formatting
-autocmd BufRead,BufNewFile *.erb  set filetype=html autoread
-autocmd BufRead,BufNewFile *.html set filetype=html autoread
-
-" Trailing Whitespace
-match ErrorMsg '\s\+$'
-
-" KILL ALL WHITESPACE!
-nnoremap <leader>rtw :%s/\s\+$//e<CR>
+"= Initial setup ==================================================================================
 
-syntax on
-
-set laststatus=2 " Always display the statusline in all windows
-set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
-
-"no swap
-set noswapfile
+  " use Vim settings, rather than Vi settings, required for Vundle
+  set nocompatible
+  filetype off
 
-" Toggle paste
-" For some reason pastetoggle doesn't redraw the screen (thus the status bar
-" doesn't change) while :set paste! does, so I use that instead.
-" set pastetoggle=<F6>
-nnoremap <F6> :set paste!<cr>
-nnoremap <F7> :noh<cr>
+  " initialize Vundle and rebuild helptags
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
 
-" Toggle [i]nvisible characters
-nnoremap <leader>i :set list!<cr>
+  Plugin 'gmarik/Vundle.vim'                " let Vundle manage Vundle, required
+  Plugin 'scrooloose/nerdtree'              " file menu
+  Plugin 'kien/ctrlp.vim'                   " fuzzy file finder
+  Plugin 'scrooloose/syntastic'             " syntax checker
+  Plugin 'godlygeek/tabular'                " for indentation
+  Plugin 'airblade/vim-gitgutter'           " git diff in gutter
+  Plugin 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
+  Plugin 'tpope/vim-commentary'             " easily use comments
+  Plugin 'terryma/vim-multiple-cursors'     " multiple cursors
+  Plugin 'kchmck/vim-coffee-script'         " coffeescript syntax & indent
+  Plugin 'mileszs/ack.vim'                  " searching via :Ack
+  Plugin 'vim-ruby/vim-ruby'                " ruby syntax & indent
+  Plugin 'tpope/vim-markdown'               " markdown syntax & indent
+  Plugin 'pangloss/vim-javascript'          " javascript syntax & indent
+  Plugin 'othree/html5.vim'                 " html5 syntax & indent
+  Plugin 'tpope/vim-haml'                   " haml syntax & indent
+  Plugin 'fatih/vim-go'                     " go syntax / indent / plugins
+  Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebars syntax & indent
+  Plugin 'heartsentwined/vim-emblem'        " emblem syntax & indent
+  Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
+  Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
 
-" Don't try to highlight lines longer than 800 characters.
-set synmaxcol=800
+  " end Vundle init (required)
+  call vundle#end()
+  filetype plugin indent on
 
-" Resize splits when the window is resized
-au VimResized * :wincmd =
+"= Interface ======================================================================================
 
-"jj escape
-:imap jj <Esc>
+  "- Appearance -----------------------------------------------------------------------------------
 
-" POWERLINE
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-let g:Powerline_symbols = 'fancy'
+    syntax on                    " turn on syntax highilghting
 
-" always show the status
-set laststatus=2
-set fillchars+=stl:\ ,stlnc:\
-"set rtp+=/Users/watts/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
-set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
+    filetype plugin on           " enable loading plugins for filetypes
+    filetype indent on           " enable loading 'indent files' for filetypes
 
-" Enable filetypes
-filetype on
-filetype plugin on
-filetype indent on
-syntax on
+    set synmaxcol=200            " no syntax highlighting for lines longer than 200 cols
 
-"Write the old file out when switching between files.
-set autowrite
+    set laststatus=2             " show status bar
 
-"Display current cursor position in the lower right corner
-set ruler
+    set number                   " display line numbers
+    set visualbell               " use visual bell
 
-"Color line!
-set colorcolumn=80
+    set background=dark          " Dark background
+    set laststatus=2             " Fix for statusbar toggling
+    set encoding=utf-8           " Fix special character encoding
+    set t_Co=256                 " MOAR COLORS
 
-"We have a fast terminal
-set ttyfast
+    set cursorline               " show cursor line
+    set ruler                    " cursor position in the lower right corner
 
-" make vim redraw screen instead of scrolling when there are more than 3 lines to be scrolled
-set ttyscroll=999
+    match ErrorMsg '\s\+$'       " highlight trailing whitespace
 
-set so=999
+    au VimResized * :wincmd =    " resize splits when window is resized
 
-"Backup stuff
-set nobackup
-set nowritebackup
-
-"Lazy ReDraw!
-set lazyredraw
-
-"Tab stuff
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-
-"Show command in bottom right portion of the screen
-set showcmd
-
-"Show line numbers
-set number
-
-"Show cursor line
-:set cursorline
-
-"Indent stuff
-set smartindent
-set autoindent
-
-"Always show last status line
-set laststatus=2
-
-"Better line wrapper
-set wrap
-set textwidth=80
-set formatoptions=qrn1
-
-"Set incremental searching
-set incsearch
-
-"Highlight searching
-set hlsearch
-
-"case insensitive search
-set ignorecase
-set smartcase
-
-" Insert a hash rocket with <c-l>
-imap <c-l> =><space>
-
-"Easy splits and switches over (\v)
-nnoremap <leader>v <C-w>v<C-w><C-w>
-nnoremap <leader>h <C-w>s<C-w><C-w>
-
-"Map escape key to jj -- much faster
-imap jj <esc>
-
-" easier window navigation
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
-
-"GitGutter
-let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
-
-" Added SignColumn used by Vim-gutter to match default BG colour
-" Background color is the same as the one defined by the “:hi Normal” line
-" hi SignColumn ctermbg=145 guibg=#252c31 gui=NONE
-
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" FIX HTML!
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufRead,BufNewFile *.erb  set filetype=mason autoread
-autocmd BufRead,BufNewFile *.html set filetype=mason autoread
-autocmd FileType html setlocal indentkeys-=*<Return>
-
-"Integration with ThymeRB
-""start pomodoro
-nmap <leader>w :!thyme -d<cr>
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" NERD TREE TOGGLE
-" press F4 to lint!
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <C-k><C-b> :NERDTreeToggle<CR>
-" hidden files
-let NERDTreeShowHidden=1
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Inline Evaluation of Ruby
-" leader + e
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType ruby nmap <buffer> <leader>e <Plug>(xmpfilter-mark) <Plug>(xmpfilter-run)
-autocmd FileType ruby xmap <buffer> <leader>e <Plug>(xmpfilter-mark) <Plug>(xmpfilter-run)
-autocmd FileType ruby imap <buffer> <leader>e <Plug>(xmpfilter-mark) <Plug>(xmpfilter-run)
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Thor syntax highlighting
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufRead,BufNewFile *.thor set filetype=thor
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CtrlP Configuration
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
-" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = 'tmp$\|\.git$\|\.hg$\|\.svn$\|.rvm$|.bundle$\|vendor'
-
-let g:ctrlp_user_command = 'find %s -type f'
-let g:ctrlp_use_caching = 0
-
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ack Configuration
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ackprg = 'ag --nogroup --nocolor --column'
-
-" Can't be bothered to understand ESC vs <c-c> in insert mode
-imap <c-c> <esc>
-nnoremap <leader><leader> <c-^>
-
-" LINE COLOR?
-let &colorcolumn=join(range(81,999),",")
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
-"let &colorcolumn="80,".join(range(120,999),",")
-
-" Test Runner
-"nnoremap <cr> :!echo "rspec spec" >> .test-commands<cr>
-
-"MACVIM settings
-set guifont=Source\ Code\ Pro\ Light:h16            " Font family and font size.
-set antialias                     " MacVim: smooth fonts.
-set encoding=utf-8                " Use UTF-8 everywhere.
-set guioptions-=T                 " Hide toolbar.
-set guioptions-=r                 " Don't show right scrollbar
-set guioptions-=l                 " Don't show left scrollbar
-
-set nofoldenable    " disable folding
-
-" MARKDOWN
-" disable folding
-let g:vim_markdown_folding_disabled=1
-" set indent to 4
-au FileType python setl sw=4 sts=4 et
-
-function! SwitchColorSchemes()
-  if g:dark_theme
-    colorscheme smyck
-    set background=dark
+  "- Interaction ----------------------------------------------------------------------------------
+
+    set ttyfast                  " improve screen refresh for terminal vim
+    set lazyredraw               " don't redraw while executing macros. async window title update
+    set ttyscroll=3              " something about scrolling buffer size
+
+    set scrolloff=3              " start scrolling 3 lines from bottom
+    set sidescrolloff=6          " start scrolling 6 lines from right
+    let loaded_match_paren = 1   " highlight matching parens
+
+    set mouse=a                  " allow mouse usage
+    set clipboard=unnamed        " set default yank register to machine clipboard
+
+    set nofoldenable             " disable folding
+
+  "- Wrapping -------------------------------------------------------------------------------------
+
+    set nowrap                   " don't softwrap text
+    set formatoptions-=t         " don't automatically hardwrap text (use 'gq' to reflow text)
+    set textwidth=100            " wrap at column 100
+    set wrapmargin=0             " don't wrap based on terminal size
+
+  "- Indentation ----------------------------------------------------------------------------------
+
+    set autoindent               " indent next line to same level as current line
+    set smartindent              "   ↑ but do it smartly
+    set smarttab                 " <Tab> in front of a line inserts 'shiftwidth' blanks
+    set shiftwidth=2             "   ↑ use 2 blanks for above
+    set tabstop=2                " display a <Tab> as 2 spaces
+    set softtabstop=2            " use 2 spaces for a <Tab>
+    set expandtab
+
+  "- Searching ------------------------------------------------------------------------------------
+
+    set hlsearch                 " highlight searching
+    set ignorecase               " case insensitive search
+    set smartcase                " case insensitive search
+    set incsearch                " incremental search
+
+  "- Theme ----------------------------------------------------------------------------------------
+
+    set background=dark          " dark background
+    colorscheme smyck            " colorscheme
+
     let &colorcolumn=join(range(81,999),",")
     highlight ColorColumn ctermbg=235 guibg=#2c2d27
     highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
-    " let g:dark_theme = 0
-  else
-    colorscheme solarized
-    set background=light
-    let &colorcolumn=join(range(81,999),",")
-    highlight ColorColumn ctermbg=230 guibg=#2c2d27
-    highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
 
-    " let g:dark_theme = 1
+"= Utilities ======================================================================================
+
+  set noswapfile                 " don't create swap files
+  set autowrite                  " write the old file out when switching between files
+
+"= Keys ===========================================================================================
+
+  let mapleader = ','                       " set <Leader>
+  set backspace=indent,eol,start            " make backspace behave as expected
+  nnoremap <leader>v <C-w>v<C-w><C-w>       " easy splits and switches over (\v)
+  nnoremap <leader>s <C-w>s<C-w><C-w>
+
+  imap jj <esc>                             " map escape key to jj -- much faster
+
+  nmap <C-h> <C-w>h                         " easier window navigation
+  nmap <C-j> <C-w>j
+  nmap <C-k> <C-w>k
+  nmap <C-l> <C-w>l
+
+  nnoremap <leader>rtw :%s/\s\+$//e<CR>     " kill the trailing whitespace
+
+  nnoremap <F6> :set paste!<cr>             " toggle Paste mode
+  nnoremap <F7> :noh<cr>                    " toggle off highlight
+
+  nmap <silent> <leader>ev :e $MYVIMRC<CR>  " quick edit VIMRC
+  nmap <silent> <leader>sv :so $MYVIMRC<CR> " quick reload VIMRC
+
+  "- Tab Key --------------------------------------------------------------------------------------
+  function! InsertTabWrapper()   " tab autocomplete
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+      return "\<tab>"
+    else
+      return "\<c-p>"
+    endif
+  endfunction
+
+  inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+  inoremap <s-tab> <c-n>
+
+"= Plugin Settings=================================================================================
+
+  "- Powerline ------------------------------------------------------------------------------------
+
+  python from powerline.vim import setup as powerline_setup
+  python powerline_setup()
+  python del powerline_setup
+  let g:Powerline_symbols = 'fancy'
+  set fillchars+=stl:\ ,stlnc:\
+  set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
+
+  "- NerdTree -------------------------------------------------------------------------------------
+
+  nnoremap <C-k><C-b> :NERDTreeToggle<CR> " toggle NerdTree (ControlK + ControlB)
+  let NERDTreeShowHidden=1                " show hidden files
+  let NERDTreeQuitOnOpen = 1              " Hide NERDTree when opening a file
+
+  "- Control-P ------------------------------------------------------------------------------------
+
+  set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/* " ignore certain file types
+  let g:ctrlp_custom_ignore = 'tmp$\|\.git$\|\.hg$\|\.svn$\|.rvm$|.bundle$\|vendor'
+
+  let g:ctrlp_user_command = 'find %s -type f'                  " custom finder
+  let g:ctrlp_use_caching = 0                                   " don't cache
+
+  let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'               " cache directory
+  if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'       " use AG if avail
   endif
-endfunction
 
-" Easy Switch from HTML/PHP Indentation
-nnoremap <leader>q :call HTMLPHPTemplateToggle()<cr>
+  "- Rspec.vim  -----------------------------------------------------------------------------------
 
-let g:php_is_enabled = 0
+  let g:rspec_command = "!bundle exec bin/rspec {spec}"         " use spring
+  let g:rspec_runner = "os_x_iterm"
+  map <Leader>t :call RunCurrentSpecFile()<CR>
+  map <Leader>s :call RunNearestSpec()<CR>
+  map <Leader>l :call RunLastSpec()<CR>
+  map <Leader>a :call RunAllSpecs()<CR>
 
-function! HTMLPHPTemplateToggle()
-  if g:php_is_enabled
-    :set ft=mason
-    let g:php_is_enabled = 0
-  else
-    :set ft=php
-    let g:php_is_enabled = 1
-  endif
-endfunction
+  "- Indent Guides ---------------------------------------------------------------------------------
 
-function! ExecuteGoCode()
-  exec ":!clear && go run " . @%
-endfunction
+  let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
+  let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
+  let g:indent_guides_start_level = 1               " don't show guides until the third indent
 
-" Execute GO with Enter key
-function! MapCR()
-  if (&ft=='go')
-    :call ExecuteGoCode()
-  endif
-  if (&ft=='ruby')
-    :call RunLastSpec()
-  endif
-endfunction
+"= Language Specific Settings======================================================================
 
-:nnoremap <cr> :call MapCR()<cr>
+  "- Golang ---------------------------------------------------------------------------------------
 
-" Colorscheme Selection
-:call SwitchColorSchemes()
+  let g:go_fmt_command = "gofmt"         " use gofmt on save w/ go commands (from go plugin)
+
+  function! ExecuteGoCode()              " for running Golang on enter
+    exec ":!clear && go run " . @%
+  endfunction
+
+  "- J Builder ------------------------------------------------------------------------------------
+
+  au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby
+
+"= Enter Key ======================================================================================
+
+  function! MapCR()
+    if (&ft=='go')
+      :call ExecuteGoCode()
+    endif
+    if (&ft=='ruby')
+      :call RunLastSpec()
+    endif
+  endfunction
