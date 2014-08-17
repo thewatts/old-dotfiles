@@ -29,6 +29,7 @@
   Plugin 'heartsentwined/vim-emblem'        " emblem syntax & indent
   Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
   Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
+  Plugin 'groenewege/vim-less'              " Less syntax highlighting / indentation
 
   " end Vundle init (required)
   call vundle#end()
@@ -43,7 +44,7 @@
     filetype plugin on           " enable loading plugins for filetypes
     filetype indent on           " enable loading 'indent files' for filetypes
 
-    set synmaxcol=200            " no syntax highlighting for lines longer than 200 cols
+    set synmaxcol=400            " no syntax highlighting for lines longer than 200 cols
 
     set laststatus=2             " show status bar
 
@@ -120,7 +121,7 @@
   let mapleader = ','                       " set <Leader>
   set backspace=indent,eol,start            " make backspace behave as expected
   nnoremap <leader>v <C-w>v<C-w><C-w>       " easy splits and switches over (\v)
-  nnoremap <leader>s <C-w>s<C-w><C-w>
+  nnoremap <leader>h <C-w>s<C-w><C-w>
 
   imap jj <esc>                             " map escape key to jj -- much faster
 
@@ -136,6 +137,8 @@
 
   nmap <silent> <leader>ev :e $MYVIMRC<CR>  " quick edit VIMRC
   nmap <silent> <leader>sv :so $MYVIMRC<CR> " quick reload VIMRC
+
+  nnoremap <leader><leader> <c-^>           " quick switch file
 
   "- Tab Key --------------------------------------------------------------------------------------
   function! InsertTabWrapper()   " tab autocomplete
@@ -161,6 +164,11 @@
   set fillchars+=stl:\ ,stlnc:\
   set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
 
+  "- Syntastic ------------------------------------------------------------------------------------
+  let g:syntastic_mode_map={ 'mode': 'active',
+                     \ 'active_filetypes': [],
+                     \ 'passive_filetypes': ['html'] } " disable checking for html
+
   "- NerdTree -------------------------------------------------------------------------------------
 
   nnoremap <C-k><C-b> :NERDTreeToggle<CR> " toggle NerdTree (ControlK + ControlB)
@@ -169,16 +177,18 @@
 
   "- Control-P ------------------------------------------------------------------------------------
 
-  set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/* " ignore certain file types
-  let g:ctrlp_custom_ignore = 'tmp$\|\.git$\|\.hg$\|\.svn$\|.rvm$|.bundle$\|vendor'
+  " Don't use caching
+  let g:ctrlp_use_caching = 0
 
-  let g:ctrlp_user_command = 'find %s -type f'                  " custom finder
-  let g:ctrlp_use_caching = 0                                   " don't cache
+  " Custom ignore paths
+  set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+  let g:ctrlp_custom_ignore = {
+    \ 'dir':  'node_modules',
+    \ }
 
-  let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'               " cache directory
-  if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'       " use AG if avail
-  endif
+  "- Ack ------------------------------------------------------------------------------------------
+
+  let g:ackprg = 'ag --nogroup --nocolor --column'
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
 
@@ -219,3 +229,5 @@
       :call RunLastSpec()
     endif
   endfunction
+
+  :nnoremap <cr> :call MapCR()<cr>
