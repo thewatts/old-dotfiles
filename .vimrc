@@ -123,7 +123,8 @@
   nnoremap <leader>v <C-w>v<C-w><C-w>       " easy splits and switches over (\v)
   nnoremap <leader>h <C-w>s<C-w><C-w>
 
-  imap jj <esc>                             " map escape key to jj -- much faster
+  " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
+  imap jj <esc>
 
   nmap <C-h> <C-w>h                         " easier window navigation
   nmap <C-j> <C-w>j
@@ -132,7 +133,8 @@
 
   nnoremap <leader>rtw :%s/\s\+$//e<CR>     " kill the trailing whitespace
 
-  nnoremap <F6> :set paste!<cr>             " toggle Paste mode
+  " toggle Paste mode, comments above b/c of Vim's interpretation of them jumping my cursor
+  nnoremap <F6> :set paste!<cr>
   nnoremap <F7> :noh<cr>                    " toggle off highlight
 
   nmap <silent> <leader>ev :e $MYVIMRC<CR>  " quick edit VIMRC
