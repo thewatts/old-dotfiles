@@ -10,7 +10,7 @@
 
   Plugin 'gmarik/Vundle.vim'                " let Vundle manage Vundle, required
   Plugin 'scrooloose/nerdtree'              " file menu
-  Plugin 'kien/ctrlp.vim'                   " fuzzy file finder
+  Plugin 'ctrlpvim/ctrlp.vim'               " fuzzy file finder
   Plugin 'scrooloose/syntastic'             " syntax checker
   Plugin 'godlygeek/tabular'                " for indentation
   Plugin 'airblade/vim-gitgutter'           " git diff in gutter
@@ -30,6 +30,11 @@
   Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
   Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
   Plugin 'groenewege/vim-less'              " Less syntax highlighting / indentation
+  Plugin 'hunner/vim-plist'                 " PLIST Syntax Highlighting / indentation
+  Plugin 'Valloric/YouCompleteMe'           " Autocomplete Magic
+  Plugin 'tpope/vim-endwise'                " auto end addition in ruby
+  Plugin 't9md/vim-ruby-xmpfilter'          " inline ruby completion
+  Plugin 'wesQ3/vim-windowswap'             " window swapping
 
   " end Vundle init (required)
   call vundle#end()
@@ -135,25 +140,14 @@
 
   " toggle Paste mode, comments above b/c of Vim's interpretation of them jumping my cursor
   nnoremap <F6> :set paste!<cr>
-  nnoremap <F7> :noh<cr>                    " toggle off highlight
+  " toggle No Highlight mode, comments above b/c of Vim's interpretation of them jumping my cursor
+  nnoremap <F7> :noh<cr>
 
   nmap <silent> <leader>ev :e $MYVIMRC<CR>  " quick edit VIMRC
   nmap <silent> <leader>sv :so $MYVIMRC<CR> " quick reload VIMRC
 
-  nnoremap <leader><leader> <c-^>           " quick switch file
-
-  "- Tab Key --------------------------------------------------------------------------------------
-  function! InsertTabWrapper()   " tab autocomplete
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-      return "\<tab>"
-    else
-      return "\<c-p>"
-    endif
-  endfunction
-
-  inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-  inoremap <s-tab> <c-n>
+  " quick switch file
+  nnoremap <leader><leader> <c-^>
 
 "= Plugin Settings=================================================================================
 
@@ -177,13 +171,17 @@
   let NERDTreeShowHidden=1                " show hidden files
   let NERDTreeQuitOnOpen = 1              " Hide NERDTree when opening a file
 
+  "- Tabularize  ----------------------------------------------------------------------------------
+  vmap <Leader>= :Tabularize /=<CR>
+  vmap <Leader>{ :Tabularize /{<CR>
+
   "- Control-P ------------------------------------------------------------------------------------
 
   " Don't use caching
   let g:ctrlp_use_caching = 0
 
   " Custom ignore paths
-  set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+  set wildignore+=*/tmp/*,*/bin/*,*/bower_components/*,*.so,*.swp,*.zip     " MacOSX/Linux
   let g:ctrlp_custom_ignore = {
     \ 'dir':  'node_modules',
     \ }
@@ -194,18 +192,43 @@
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
 
-  let g:rspec_command = "!bundle exec bin/rspec {spec}"         " use spring
+  " let g:rspec_command = '!bundle exec bin/rspec {spec}'         " use spring
+  let g:rspec_command = '!bundle exec rspec {spec}'         " use spring
   let g:rspec_runner = "os_x_iterm"
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
   map <Leader>l :call RunLastSpec()<CR>
   map <Leader>a :call RunAllSpecs()<CR>
 
+  "- XMPFilter  ------------------------------------------------------------------------------------
+  map <C-b> <Plug>(xmpfilter-mark)<Plug>(xmpfilter-run)
+  " map <F5> <Plug>(xmpfilter-run)
+
   "- Indent Guides ---------------------------------------------------------------------------------
 
   let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
   let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
   let g:indent_guides_start_level = 1               " don't show guides until the third indent
+
+  "- Selecta --------------------------------------------------------------------------------------
+  " https://github.com/garybernhardt/selecta#use-with-vim
+
+  " function! SelectaCommand(choice_command, selecta_args, vim_command)
+  "   try
+  "     silent let selection = system(a:choice_command . ' | selecta ' . a:selecta_args)
+  "   catch /Vim:Interrupt/
+  "     " Swallow the ^C so that the redraw below happens; otherwise there will be
+  "     " leftovers from selecta on the screen
+  "     redraw!
+  "     return
+  "   endtry
+  "   redraw!
+  "   exec a:vim_command . ' ' . selection
+  " endfunction
+
+  " " Find all files in all non-dot directories starting in the working directory.
+  " " Fuzzy select one of those. Open the selected file with :e.
+  " nnoremap <leader>f :call SelectaCommand("find * -type f", '', ':e')<cr>
 
 "= Language Specific Settings======================================================================
 
@@ -217,6 +240,12 @@
     exec ":!clear && go run " . @%
   endfunction
 
+  "- C ---------------------------------------------------------------------------------------
+  function! ExecuteCCode()
+    " exec ':!clear && gcc ' . @% . ' -o file && ./file'
+    exec ':Shell gcc ' . @% . ' -o file && ./file'
+  endfunction
+
   "- J Builder ------------------------------------------------------------------------------------
 
   au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby
@@ -224,6 +253,9 @@
 "= Enter Key ======================================================================================
 
   function! MapCR()
+    if (&ft=='c')
+      :call ExecuteCCode()
+    endif
     if (&ft=='go')
       :call ExecuteGoCode()
     endif
@@ -233,3 +265,20 @@
   endfunction
 
   :nnoremap <cr> :call MapCR()<cr>
+
+"= For running commands in a new window ========================================================
+function! s:ExecuteInShell(command)
+  let command = join(map(split(a:command), 'expand(v:val)'))
+  let winnr = bufwinnr('^' . command . '$')
+  silent! execute  winnr < 0 ? 'botright new ' . fnameescape(command) : winnr . 'wincmd w'
+  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap number
+  echo 'Execute ' . command . '...'
+  silent! execute 'silent %!'. command
+  silent! execute 'resize ' . line('$')
+  silent! redraw
+  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
+  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
+  echo 'Shell command ' . command . ' executed.'
+  wincmd k
+endfunction
+command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
