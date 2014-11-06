@@ -35,6 +35,12 @@
   Plugin 'tpope/vim-endwise'                " auto end addition in ruby
   Plugin 't9md/vim-ruby-xmpfilter'          " inline ruby completion
   Plugin 'wesQ3/vim-windowswap'             " window swapping
+  Plugin 'bling/vim-airline'                " nice stuff
+  Plugin 'wting/rust.vim'                   " rust syntax & indent
+  Plugin 'godlygeek/csapprox'               " better gvim color support
+  Plugin 'guns/vim-clojure-static'          " clojure syntax highlighting / indentation
+  Plugin 'briancollins/vim-jst'             " JST / EJS syntax
+  Plugin 'kylef/apiblueprint.vim'           " Apiary, sucka!
 
   " end Vundle init (required)
   call vundle#end()
@@ -111,6 +117,7 @@
 
     set background=dark          " dark background
     colorscheme smyck            " colorscheme
+    " colorscheme solarized            " colorscheme
 
     let &colorcolumn=join(range(81,999),",")
     highlight ColorColumn ctermbg=235 guibg=#2c2d27
@@ -131,7 +138,8 @@
   " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
   imap jj <esc>
 
-  nmap <C-h> <C-w>h                         " easier window navigation
+  " easier window navigation
+  nmap <C-h> <C-w>h
   nmap <C-j> <C-w>j
   nmap <C-k> <C-w>k
   nmap <C-l> <C-w>l
@@ -149,16 +157,19 @@
   " quick switch file
   nnoremap <leader><leader> <c-^>
 
+  " quick insert hashrocket
+  imap <c-l> <space>=><space>
+
 "= Plugin Settings=================================================================================
 
-  "- Powerline ------------------------------------------------------------------------------------
+  " "- Powerline ------------------------------------------------------------------------------------
 
-  python from powerline.vim import setup as powerline_setup
-  python powerline_setup()
-  python del powerline_setup
-  let g:Powerline_symbols = 'fancy'
-  set fillchars+=stl:\ ,stlnc:\
-  set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
+  " python from powerline.vim import setup as powerline_setup
+  " python powerline_setup()
+  " python del powerline_setup
+  " let g:Powerline_symbols = 'fancy'
+  " set fillchars+=stl:\ ,stlnc:\
+  " set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
 
   "- Syntastic ------------------------------------------------------------------------------------
   let g:syntastic_mode_map={ 'mode': 'active',
@@ -166,7 +177,6 @@
                      \ 'passive_filetypes': ['html'] } " disable checking for html
 
   "- NerdTree -------------------------------------------------------------------------------------
-
   nnoremap <C-k><C-b> :NERDTreeToggle<CR> " toggle NerdTree (ControlK + ControlB)
   let NERDTreeShowHidden=1                " show hidden files
   let NERDTreeQuitOnOpen = 1              " Hide NERDTree when opening a file
@@ -176,7 +186,6 @@
   vmap <Leader>{ :Tabularize /{<CR>
 
   "- Control-P ------------------------------------------------------------------------------------
-
   " Don't use caching
   let g:ctrlp_use_caching = 0
 
@@ -187,13 +196,11 @@
     \ }
 
   "- Ack ------------------------------------------------------------------------------------------
-
   let g:ackprg = 'ag --nogroup --nocolor --column'
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
-
-  " let g:rspec_command = '!bundle exec bin/rspec {spec}'         " use spring
-  let g:rspec_command = '!bundle exec rspec {spec}'         " use spring
+  let g:rspec_command = '!bundle exec bin/rspec {spec}'         " use spring
+  " let g:rspec_command = '!bundle exec rspec {spec}'         " use spring
   let g:rspec_runner = "os_x_iterm"
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -202,38 +209,18 @@
 
   "- XMPFilter  ------------------------------------------------------------------------------------
   map <C-b> <Plug>(xmpfilter-mark)<Plug>(xmpfilter-run)
-  " map <F5> <Plug>(xmpfilter-run)
 
   "- Indent Guides ---------------------------------------------------------------------------------
-
   let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
   let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
   let g:indent_guides_start_level = 1               " don't show guides until the third indent
 
-  "- Selecta --------------------------------------------------------------------------------------
-  " https://github.com/garybernhardt/selecta#use-with-vim
-
-  " function! SelectaCommand(choice_command, selecta_args, vim_command)
-  "   try
-  "     silent let selection = system(a:choice_command . ' | selecta ' . a:selecta_args)
-  "   catch /Vim:Interrupt/
-  "     " Swallow the ^C so that the redraw below happens; otherwise there will be
-  "     " leftovers from selecta on the screen
-  "     redraw!
-  "     return
-  "   endtry
-  "   redraw!
-  "   exec a:vim_command . ' ' . selection
-  " endfunction
-
-  " " Find all files in all non-dot directories starting in the working directory.
-  " " Fuzzy select one of those. Open the selected file with :e.
-  " nnoremap <leader>f :call SelectaCommand("find * -type f", '', ':e')<cr>
+  "= Airline ========================================================================================
+  let g:airline_powerline_fonts = 1
 
 "= Language Specific Settings======================================================================
 
   "- Golang ---------------------------------------------------------------------------------------
-
   let g:go_fmt_command = "gofmt"         " use gofmt on save w/ go commands (from go plugin)
 
   function! ExecuteGoCode()              " for running Golang on enter
@@ -246,8 +233,13 @@
     exec ':Shell gcc ' . @% . ' -o file && ./file'
   endfunction
 
-  "- J Builder ------------------------------------------------------------------------------------
+  "- Rust-------------------------------------------------------------------------------------
+  function! ExecuteRustCode()
+    " exec ':!clear && gcc ' . @% . ' -o file && ./file'
+    exec ':Shell rustc ' . @% . ' -o file && ./file'
+  endfunction
 
+  "- J Builder ------------------------------------------------------------------------------------
   au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby
 
 "= Enter Key ======================================================================================
@@ -261,6 +253,12 @@
     endif
     if (&ft=='ruby')
       :call RunLastSpec()
+    endif
+    if (&ft=='html')
+      :call RunLastSpec()
+    endif
+    if (&ft=='rust')
+      :call ExecuteRustCode()
     endif
   endfunction
 
