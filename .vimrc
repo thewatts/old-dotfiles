@@ -27,11 +27,12 @@
   Plugin 'fatih/vim-go'                     " go syntax / indent / plugins
   Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebars syntax & indent
   Plugin 'heartsentwined/vim-emblem'        " emblem syntax & indent
-  Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
+  Plugin 'thoughtbot/vim-rspec'           " Vim RSPEC runner
+  " Plugin 'janko-m/vim-test'                 " Test Runner
+  Plugin 'benmills/vimux'                   " Vim Tmux Stuffage
   Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
   Plugin 'groenewege/vim-less'              " Less syntax highlighting / indentation
   Plugin 'hunner/vim-plist'                 " PLIST Syntax Highlighting / indentation
-  Plugin 'Valloric/YouCompleteMe'           " Autocomplete Magic
   Plugin 'tpope/vim-endwise'                " auto end addition in ruby
   Plugin 't9md/vim-ruby-xmpfilter'          " inline ruby completion
   Plugin 'wesQ3/vim-windowswap'             " window swapping
@@ -41,6 +42,17 @@
   Plugin 'guns/vim-clojure-static'          " clojure syntax highlighting / indentation
   Plugin 'briancollins/vim-jst'             " JST / EJS syntax
   Plugin 'kylef/apiblueprint.vim'           " Apiary, sucka!
+  Plugin 'vim-perl/vim-perl'                " perl syntax highlighting / indentation
+  Plugin 'chriskempson/base16-vim'          " base 16 colorscheme
+  Plugin 'junegunn/goyo.vim'                " focus mode
+  Plugin 'junegunn/limelight.vim'           " hyper focus
+  Plugin 'amix/vim-zenroom2'                " zenmode for goyo
+  Plugin 'tfnico/vim-gradle'                " gradle syntax highlighting
+  Plugin 'Valloric/YouCompleteMe'           " auto complete, son
+  Plugin 'toyamarinyon/vim-swift'           " swift that mug
+  Plugin 'mxw/vim-jsx'                      " vim jsx
+  Plugin 'mattn/emmet-vim'                  " emmet vim
+  Plugin 'jordwalke/flatlandia'
 
   " end Vundle init (required)
   call vundle#end()
@@ -92,8 +104,8 @@
   "- Wrapping -------------------------------------------------------------------------------------
 
     set nowrap                   " don't softwrap text
+    set linebreak
     set formatoptions-=t         " don't automatically hardwrap text (use 'gq' to reflow text)
-    set textwidth=100            " wrap at column 100
     set wrapmargin=0             " don't wrap based on terminal size
 
   "- Indentation ----------------------------------------------------------------------------------
@@ -106,6 +118,11 @@
     set softtabstop=2            " use 2 spaces for a <Tab>
     set expandtab
 
+    " for html
+    autocmd FileType html setlocal indentkeys-=*<Return>
+    autocmd FileType html.handlebars setlocal indentkeys-=*<Return>
+    autocmd FileType eruby setlocal indentkeys-=*<Return>
+
   "- Searching ------------------------------------------------------------------------------------
 
     set hlsearch                 " highlight searching
@@ -116,8 +133,10 @@
   "- Theme ----------------------------------------------------------------------------------------
 
     set background=dark          " dark background
-    colorscheme smyck            " colorscheme
+    " colorscheme base16-default            " colorscheme
+    " colorscheme smyck            " colorscheme
     " colorscheme solarized            " colorscheme
+    colorscheme flatlandia
 
     let &colorcolumn=join(range(81,999),",")
     highlight ColorColumn ctermbg=235 guibg=#2c2d27
@@ -125,8 +144,9 @@
 
 "= Utilities ======================================================================================
 
-  set noswapfile                 " don't create swap files
-  set autowrite                  " write the old file out when switching between files
+  set noswapfile                     " don't create swap files
+  set autowrite                      " write the old file out when switching between files
+  autocmd BufWritePre * :%s/\s\+$//e " auto strip whitespace on save
 
 "= Keys ===========================================================================================
 
@@ -162,19 +182,13 @@
 
 "= Plugin Settings=================================================================================
 
-  " "- Powerline ------------------------------------------------------------------------------------
-
-  " python from powerline.vim import setup as powerline_setup
-  " python powerline_setup()
-  " python del powerline_setup
-  " let g:Powerline_symbols = 'fancy'
-  " set fillchars+=stl:\ ,stlnc:\
-  " set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings.vim
-
   "- Syntastic ------------------------------------------------------------------------------------
   let g:syntastic_mode_map={ 'mode': 'active',
                      \ 'active_filetypes': [],
                      \ 'passive_filetypes': ['html'] } " disable checking for html
+
+  "- Markdown ------------------------------------------------------------------------------------
+  let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
 
   "- NerdTree -------------------------------------------------------------------------------------
   nnoremap <C-k><C-b> :NERDTreeToggle<CR> " toggle NerdTree (ControlK + ControlB)
@@ -200,8 +214,8 @@
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
   let g:rspec_command = '!bundle exec bin/rspec {spec}'         " use spring
-  " let g:rspec_command = '!bundle exec rspec {spec}'         " use spring
-  let g:rspec_runner = "os_x_iterm"
+  " let g:rspec_command = '!bundle exec rspec {spec}'         " dont use spring
+  let g:rspec_runner = 'os_x_iterm'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
   map <Leader>l :call RunLastSpec()<CR>
@@ -218,10 +232,17 @@
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
 
+  "= Goyo & Limelight ===============================================================================
+  autocmd User GoyoEnter Limelight
+  autocmd User GoyoLeave Limelight!
+  let g:goyo_width = 120
+  nnoremap <Leader>G :Goyo<CR>
+
 "= Language Specific Settings======================================================================
 
   "- Golang ---------------------------------------------------------------------------------------
-  let g:go_fmt_command = "gofmt"         " use gofmt on save w/ go commands (from go plugin)
+  " let g:go_fmt_command = 'gofmt'         " use gofmt on save w/ go commands (from go plugin)
+  let g:go_fmt_command = 'goimports'         " use gofmt on save w/ go commands (from go plugin)
 
   function! ExecuteGoCode()              " for running Golang on enter
     exec ":!clear && go run " . @%
@@ -239,8 +260,18 @@
     exec ':Shell rustc ' . @% . ' -o file && ./file'
   endfunction
 
+  "- ES6---------------------------------------------------------------------------------------
+  autocmd BufRead,BufNewFile *.es6 setfiletype javascript
+
+  "- JavaScript
+  autocmd FileType javascript inoremap {<CR> {<CR>}<Esc><S-o>
+  autocmd FileType javascript inoremap (; ();<Esc>hi
+
   "- J Builder ------------------------------------------------------------------------------------
   au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby
+
+  "- HBARS ------------------------------------------------------------------------------------
+  au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby
 
 "= Enter Key ======================================================================================
 
@@ -252,6 +283,9 @@
       :call ExecuteGoCode()
     endif
     if (&ft=='ruby')
+      :call RunLastSpec()
+    endif
+    if (&ft=='haml')
       :call RunLastSpec()
     endif
     if (&ft=='html')
