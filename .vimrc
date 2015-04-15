@@ -27,31 +27,26 @@
   Plugin 'fatih/vim-go'                     " go syntax / indent / plugins
   Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebars syntax & indent
   Plugin 'heartsentwined/vim-emblem'        " emblem syntax & indent
-  Plugin 'thoughtbot/vim-rspec'           " Vim RSPEC runner
-  " Plugin 'janko-m/vim-test'                 " Test Runner
-  Plugin 'benmills/vimux'                   " Vim Tmux Stuffage
+  Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
+  Plugin 'benmills/vimux'                   " Vim + Tmux Goodness
   Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
   Plugin 'groenewege/vim-less'              " Less syntax highlighting / indentation
   Plugin 'hunner/vim-plist'                 " PLIST Syntax Highlighting / indentation
   Plugin 'tpope/vim-endwise'                " auto end addition in ruby
   Plugin 't9md/vim-ruby-xmpfilter'          " inline ruby completion
   Plugin 'wesQ3/vim-windowswap'             " window swapping
-  Plugin 'bling/vim-airline'                " nice stuff
+  Plugin 'bling/vim-airline'                " nice looking footer bar
   Plugin 'wting/rust.vim'                   " rust syntax & indent
   Plugin 'godlygeek/csapprox'               " better gvim color support
   Plugin 'guns/vim-clojure-static'          " clojure syntax highlighting / indentation
   Plugin 'briancollins/vim-jst'             " JST / EJS syntax
-  Plugin 'kylef/apiblueprint.vim'           " Apiary, sucka!
   Plugin 'vim-perl/vim-perl'                " perl syntax highlighting / indentation
   Plugin 'chriskempson/base16-vim'          " base 16 colorscheme
-  Plugin 'junegunn/goyo.vim'                " focus mode
-  Plugin 'junegunn/limelight.vim'           " hyper focus
-  Plugin 'amix/vim-zenroom2'                " zenmode for goyo
   Plugin 'tfnico/vim-gradle'                " gradle syntax highlighting
   Plugin 'Valloric/YouCompleteMe'           " auto complete, son
-  Plugin 'toyamarinyon/vim-swift'           " swift that mug
-  Plugin 'mxw/vim-jsx'                      " vim jsx
-  Plugin 'mattn/emmet-vim'                  " emmet vim
+  Plugin 'toyamarinyon/vim-swift'           " swift syntax highlighting / indent
+  Plugin 'mxw/vim-jsx'                      " vim syntax highlighting / indent for jsx
+  Plugin 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
   Plugin 'jordwalke/flatlandia'
 
   " end Vundle init (required)
@@ -132,11 +127,10 @@
 
   "- Theme ----------------------------------------------------------------------------------------
 
-    set background=dark          " dark background
-    " colorscheme base16-default            " colorscheme
-    " colorscheme smyck            " colorscheme
-    " colorscheme solarized            " colorscheme
-    colorscheme flatlandia
+    set background=dark      " dark background
+    " colorscheme smyck      " smyck colorscheme
+    " colorscheme solarized  " solarized colorscheme
+    colorscheme flatlandia   " flatlandia colorscheme
 
     let &colorcolumn=join(range(81,999),",")
     highlight ColorColumn ctermbg=235 guibg=#2c2d27
@@ -152,7 +146,9 @@
 
   let mapleader = ','                       " set <Leader>
   set backspace=indent,eol,start            " make backspace behave as expected
-  nnoremap <leader>v <C-w>v<C-w><C-w>       " easy splits and switches over (\v)
+
+  " easy splits and switches over (\v)
+  nnoremap <leader>v <C-w>v<C-w><C-w>
   nnoremap <leader>h <C-w>s<C-w><C-w>
 
   " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
@@ -164,15 +160,18 @@
   nmap <C-k> <C-w>k
   nmap <C-l> <C-w>l
 
-  nnoremap <leader>rtw :%s/\s\+$//e<CR>     " kill the trailing whitespace
+  " kill the trailing whitespace
+  nnoremap <leader>rtw :%s/\s\+$//e<CR>
 
   " toggle Paste mode, comments above b/c of Vim's interpretation of them jumping my cursor
   nnoremap <F6> :set paste!<cr>
   " toggle No Highlight mode, comments above b/c of Vim's interpretation of them jumping my cursor
   nnoremap <F7> :noh<cr>
 
-  nmap <silent> <leader>ev :e $MYVIMRC<CR>  " quick edit VIMRC
-  nmap <silent> <leader>sv :so $MYVIMRC<CR> " quick reload VIMRC
+  " quick edit VIMRC
+  nmap <silent> <leader>ev :e $MYVIMRC<CR>
+  " quick reload VIMRC
+  nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
   " quick switch file
   nnoremap <leader><leader> <c-^>
@@ -187,13 +186,16 @@
                      \ 'active_filetypes': [],
                      \ 'passive_filetypes': ['html'] } " disable checking for html
 
+  let g:syntastic_javascript_checkers = ['eslint']
+
   "- Markdown ------------------------------------------------------------------------------------
   let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
 
   "- NerdTree -------------------------------------------------------------------------------------
-  nnoremap <C-k><C-b> :NERDTreeToggle<CR> " toggle NerdTree (ControlK + ControlB)
-  let NERDTreeShowHidden=1                " show hidden files
-  let NERDTreeQuitOnOpen = 1              " Hide NERDTree when opening a file
+  " toggle NerdTree (ControlK + ControlB)
+  nnoremap <C-k><C-b> :NERDTreeToggle<CR>
+  let NERDTreeShowHidden=1    " show hidden files
+  let NERDTreeQuitOnOpen = 1  " Hide NERDTree when opening a file
 
   "- Tabularize  ----------------------------------------------------------------------------------
   vmap <Leader>= :Tabularize /=<CR>
@@ -202,6 +204,9 @@
   "- Control-P ------------------------------------------------------------------------------------
   " Don't use caching
   let g:ctrlp_use_caching = 0
+
+  "- JSX ------------------------------------------------------------------------------------
+  let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
   " Custom ignore paths
   set wildignore+=*/tmp/*,*/bin/*,*/bower_components/*,*.so,*.swp,*.zip     " MacOSX/Linux
@@ -213,8 +218,8 @@
   let g:ackprg = 'ag --nogroup --nocolor --column'
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
-  let g:rspec_command = '!bundle exec bin/rspec {spec}'         " use spring
-  " let g:rspec_command = '!bundle exec rspec {spec}'         " dont use spring
+  let g:rspec_command = '!bundle exec bin/rspec {spec}'  " use spring w/ rspec runner
+  " let g:rspec_command = '!bundle exec rspec {spec}'      " dont use spring w/ rspec runner
   let g:rspec_runner = 'os_x_iterm'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -241,8 +246,7 @@
 "= Language Specific Settings======================================================================
 
   "- Golang ---------------------------------------------------------------------------------------
-  " let g:go_fmt_command = 'gofmt'         " use gofmt on save w/ go commands (from go plugin)
-  let g:go_fmt_command = 'goimports'         " use gofmt on save w/ go commands (from go plugin)
+  let g:go_fmt_command = 'goimports'     " use gofmt on save w/ go commands (from go plugin)
 
   function! ExecuteGoCode()              " for running Golang on enter
     exec ":!clear && go run " . @%
@@ -250,13 +254,11 @@
 
   "- C ---------------------------------------------------------------------------------------
   function! ExecuteCCode()
-    " exec ':!clear && gcc ' . @% . ' -o file && ./file'
     exec ':Shell gcc ' . @% . ' -o file && ./file'
   endfunction
 
   "- Rust-------------------------------------------------------------------------------------
   function! ExecuteRustCode()
-    " exec ':!clear && gcc ' . @% . ' -o file && ./file'
     exec ':Shell rustc ' . @% . ' -o file && ./file'
   endfunction
 
@@ -268,10 +270,10 @@
   autocmd FileType javascript inoremap (; ();<Esc>hi
 
   "- J Builder ------------------------------------------------------------------------------------
-  au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby
+  au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby for jBuilder files
 
   "- HBARS ------------------------------------------------------------------------------------
-  au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby
+  au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby, for hbars files
 
 "= Enter Key ======================================================================================
 
