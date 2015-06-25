@@ -48,6 +48,10 @@
   Plugin 'mxw/vim-jsx'                      " vim syntax highlighting / indent for jsx
   Plugin 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
   Plugin 'jordwalke/flatlandia'
+  Plugin 'Yggdroot/indentLine'              " Line Indentation Markers
+  Plugin 'elzr/vim-json'                    " JSON jazz
+  Plugin 'slim-template/vim-slim'           " slim syntax highlighting
+  Plugin 'elixir-lang/vim-elixir'           " Elixir
 
   " end Vundle init (required)
   call vundle#end()
@@ -69,7 +73,6 @@
     set number                   " display line numbers
     set visualbell               " use visual bell
 
-    set background=dark          " Dark background
     set laststatus=2             " Fix for statusbar toggling
     set encoding=utf-8           " Fix special character encoding
     set t_Co=256                 " MOAR COLORS
@@ -128,9 +131,11 @@
   "- Theme ----------------------------------------------------------------------------------------
 
     set background=dark      " dark background
+    " set background=light      " dark background
     " colorscheme smyck      " smyck colorscheme
     " colorscheme solarized  " solarized colorscheme
     colorscheme flatlandia   " flatlandia colorscheme
+    " colorscheme ocean   " flatlandia colorscheme
 
     let &colorcolumn=join(range(81,999),",")
     highlight ColorColumn ctermbg=235 guibg=#2c2d27
@@ -204,6 +209,7 @@
   "- Control-P ------------------------------------------------------------------------------------
   " Don't use caching
   let g:ctrlp_use_caching = 0
+  let g:ctrlp_working_path_mode = ''
 
   "- JSX ------------------------------------------------------------------------------------
   let g:jsx_ext_required = 0 " Allow JSX in normal JS files
@@ -218,8 +224,8 @@
   let g:ackprg = 'ag --nogroup --nocolor --column'
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
-  let g:rspec_command = '!bundle exec bin/rspec {spec}'  " use spring w/ rspec runner
-  " let g:rspec_command = '!bundle exec rspec {spec}'      " dont use spring w/ rspec runner
+  " let g:rspec_command = '!bundle exec bin/rspec {spec}'  " use spring w/ rspec runner
+  let g:rspec_command = '!bundle exec rspec {spec}'      " dont use spring w/ rspec runner
   let g:rspec_runner = 'os_x_iterm'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -230,9 +236,14 @@
   map <C-b> <Plug>(xmpfilter-mark)<Plug>(xmpfilter-run)
 
   "- Indent Guides ---------------------------------------------------------------------------------
-  let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
-  let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
-  let g:indent_guides_start_level = 1               " don't show guides until the third indent
+  " let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
+  " let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
+  " let g:indent_guides_start_level = 1               " don't show guides until the third indent
+  let g:indentLine_enabled = 1
+  let g:indentLine_char = '¦'
+  let g:indentLine_color_term = 239
+  let g:indentLine_noConcealCursor = 1
+  " let g:indentLine_faster = 1
 
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
@@ -271,6 +282,9 @@
 
   "- J Builder ------------------------------------------------------------------------------------
   au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby for jBuilder files
+
+  "- Fdoc ------------------------------------------------------------------------------------
+  au BufNewFile,BufRead *.fdoc set ft=yaml         " set syntax to ruby for jBuilder files
 
   "- HBARS ------------------------------------------------------------------------------------
   au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby, for hbars files
