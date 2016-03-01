@@ -1,4 +1,6 @@
 "= Initial setup ==================================================================================
+  " Scheme Config
+  let g:myTheme = "solarized - dark"
 
   " use Vim settings, rather than Vi settings
   filetype off
@@ -58,6 +60,7 @@
   NeoBundle 't9md/vim-ruby-xmpfilter'          " inline ruby completion
   NeoBundle 'wesQ3/vim-windowswap'             " window swapping
   NeoBundle 'bling/vim-airline'                " nice looking footer bar
+  NeoBundle 'vim-airline/vim-airline-themes'
   NeoBundle 'briancollins/vim-jst'             " JST / EJS syntax
   NeoBundle 'mxw/vim-jsx'                      " vim syntax highlighting / indent for jsx
   NeoBundle 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
@@ -67,6 +70,9 @@
   NeoBundle 'elixir-lang/vim-elixir'           " Elixir
   NeoBundle 'reedes/vim-pencil'                " Rethinking Vim as a tool for writers
   NeoBundle 'reedes/vim-colors-pencil'         " vim-colors-pencil
+  NeoBundle 'itspriddle/vim-marked'            " Marked Support
+  NeoBundle 'Shougo/deoplete.nvim'             " autocomplete?
+  NeoBundle 'chriskempson/base16-vim'          " Base 16 Colors
   NeoBundle 'ryanoasis/vim-devicons'           " Dev Icons
 
   " end NeoBundle init (required)
@@ -167,17 +173,34 @@
 
   "- Theme ----------------------------------------------------------------------------------------
 
-    set background=dark
-    " set background=light
-    " colorscheme solarized
-    " colorscheme flatlandia
-    " colorscheme seti
-    colorscheme onedark
-
     let &colorcolumn=join(range(81,999),",")
-    highlight ColorColumn ctermbg=235 guibg=#1E222A
     highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
-    highlight CursorLineNr guifg=#E4BF7F gui=bold
+    highlight Search guifg=#FFFFFF guibg=#FC0D1B
+
+    if g:myTheme == 'solarized - dark'
+      set background=dark
+      colorscheme base16-solarized
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      let g:airline_theme='solarized'
+      let g:indentLine_color_gui = '#0A3641'
+
+    elseif g:myTheme == 'solarized - light'
+      colorscheme base16-solarized
+      set background=light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      let g:indentLine_color_gui = '#EEE8D7'
+      let g:airline_theme='solarized'
+
+    elseif g:myTheme == 'onedark'
+      set background=dark
+      colorscheme onedark
+      highlight CursorLineNr guifg=#E4BF7F gui=bold
+      highlight ColorColumn ctermbg=235 guibg=#1E222A
+      let g:indentLine_color_gui = '#515253'
+    endif
 
 "= Utilities ======================================================================================
 
@@ -228,6 +251,9 @@
 
   " quick insert hashrocket
   imap <c-l> <space>=><space>
+
+  " insert a binding.pry under cursor
+  map <Leader>d orequire 'pry'<cr>binding.pry<esc>:w<cr>
 
 "= Bundle Settings=================================================================================
 
@@ -312,7 +338,6 @@
   let g:indentLine_char = '¦'
   let g:indentLine_noConcealCursor = 1
   let g:indentLine_faster = 1
-  let g:indentLine_color_gui = '#515253'
 
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
