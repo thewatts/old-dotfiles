@@ -67,6 +67,11 @@
 
     " == JavaScript syntax highlighting ==
     Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
+=======
+
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+>>>>>>> Update NeoVim Config
     Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
@@ -90,7 +95,7 @@
     filetype plugin on           " enable loading plugins for filetypes
     filetype indent on           " enable loading 'indent files' for filetypes
 
-    set synmaxcol=400            " no syntax highlighting for lines longer than 400 cols
+    set synmaxcol=1000            " no syntax highlighting for lines longer than 400 cols
 
     set laststatus=2             " show status bar
 
@@ -337,7 +342,8 @@
       let g:airline_theme='base16'
 
     elseif g:myTheme == 'base16-oceanicnext'
-      colorscheme base16-oceanicnext
+      " colorscheme base16-oceanicnext
+      colorscheme OceanicNext
       set background=dark
       highlight CursorLineNr guifg=#EBCB8B
       highlight LineNr guibg=#17272F
@@ -353,6 +359,7 @@
       let g:indentLine_color_gui = '#343D46'
       let g:airline_theme='base16'
       let g:gitgutter_override_sign_column_highlight = 1
+      let g:airline_theme='oceanicnext'
 
     elseif g:myTheme == 'gotham'
       colorscheme gotham
@@ -629,18 +636,15 @@
 
   let g:ctrlp_working_path_mode = ''
   let g:ctrlp_match_window = 'top,order:ttb'
-<<<<<<< HEAD
   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
   " Ignore specific files and folders
   let g:ctrlp_custom_ignore = {
     \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log)|ios/build)',
-=======
 
   " Ignore specific files and folders
   let g:ctrlp_custom_ignore = {
     \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log))',
->>>>>>> Switch to Plug, additional plugin adjustments
     \ 'file': '\v\.(jpg|png|gif|db)'
     \ }
 
@@ -658,15 +662,12 @@
   " let g:rspec_command = 'term bin/spring rspec {spec}'
   " dont use spring w/ rspec runner
   " let g:rspec_command = 'term bundle exec rspec {spec}'
-<<<<<<< HEAD
   " let g:rspec_command = 'vsplit | term bundle exec rspec {spec} --format=progress'
   let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
   " let g:rspec_command = 'tabnew | term bundle exec bin/rspec {spec}'
   "
-=======
   " let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
   let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
->>>>>>> Switch to Plug, additional plugin adjustments
   let g:rspec_runner = 'os_x_iterm2'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -843,52 +844,6 @@ function! s:PrettyJSON()
   set filetype=json
 endfunction
 command! PrettyJSON :call <sid>PrettyJSON()
-
-" Prevent the terminal from taking the window with it when it closes.
-"
-" The last two screens worth of text is stored in register `t`
-" function! s:termclose() abort
-"   let first = max([1, line('w0') - winheight(0)])
-"   call setreg('t', getline(first, line('$')), 'V')
-"   let buf = expand('#')
-"   if !empty(buf) && buflisted(buf) && bufnr(buf) != bufnr('%')
-"     execute 'autocmd BufWinLeave <buffer> split' buf
-"     execute 'doautocmd FileType' getbufvar(buf, '&filetype')
-"   endif
-
-"   execute ':edit'
-" endfunction
-
-" function! s:tmuxnav(dir) abort
-"   let b:_tmuxnav = 1
-"   let buf = bufnr('%')
-"   execute 'TmuxNavigate'.a:dir
-
-"   if bufnr('%') == buf
-"     " Buffer didn't actually change.
-"     startinsert
-"   endif
-" endfunction
-
-" function! s:termopen() abort
-"   setlocal nospell
-"   tnoremap <silent><buffer> <m-h> <c-\><c-n>:<c-u>call <sid>tmuxnav('Left')<cr>
-"   tnoremap <silent><buffer> <m-j> <c-\><c-n>:<c-u>call <sid>tmuxnav('Down')<cr>
-"   tnoremap <silent><buffer> <m-k> <c-\><c-n>:<c-u>call <sid>tmuxnav('Up')<cr>
-"   tnoremap <silent><buffer> <m-l> <c-\><c-n>:<c-u>call <sid>tmuxnav('Right')<cr>
-
-"   autocmd BufEnter <buffer>
-"         \ if exists('b:_tmuxnav') |
-"         \   unlet! b:_tmuxnav |
-"         \   startinsert |
-"         \ endif
-" endfunction
-
-" augroup vimrc_term
-"   autocmd!
-"   autocmd TermOpen * call s:termopen()
-"   autocmd TermClose *:$SHELL,*:\$SHELL call s:termclose()
-" augroup END
 
 "= Because I save dumb file names.
 :autocmd BufWritePre [:;]*
