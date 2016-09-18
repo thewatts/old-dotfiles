@@ -1,97 +1,85 @@
 "= Initial setup ==================================================================================
   " Scheme Config
-  let g:myTheme = "solarized - dark"
+  let g:myTheme = 'material'
+  " let g:myTheme = 'base16-oceanicnext'
+  " let g:myTheme = 'onedark'
+  " let g:myTheme = 'gotham'
+  " let g:myTheme = 'solarized - light'
 
   " use Vim settings, rather than Vi settings
   filetype off
+  set nocompatible
+  set encoding=utf-8  " Fix special character encoding
 
-  " Setup NeoBundle
-  " if not installed, do it first
-  let bundleExists = 1
-  if (!isdirectory(expand("$HOME/.config/nvim/bundle/neobundle.vim")))
-    call system(expand("mkdir -p $HOME/.config/nvim/bundle"))
-    call system(expand("git clone https://github.com/Shougo/neobundle.vim ~/.config/nvim/bundle/neobundle.vim"))
-    let bundleExists = 0
-  endif
-  if 0 | endif
+  call plug#begin()
 
-  if has('vim_starting')
-    if &compatible
-      " Be iMproved
-    set nocompatible
-  endif
+    Plug 'Yggdroot/indentLine'              " Line Indentation Markers
+    Plug 'airblade/vim-gitgutter'           " git diff in gutter
+    Plug 'benekastah/neomake'               " syntax checker
+    Plug 'benmills/vimux'                   " Vim + Tmux Goodness
+    Plug 'bling/vim-airline'                " nice looking footer bar
+    Plug 'chriskempson/base16-vim'          " Base 16 Colors
+    Plug 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
+    Plug 'ctrlpvim/ctrlp.vim'               " fuzzy file finder
+    Plug 'godlygeek/tabular'                " for indentation
+    Plug 'tpope/vim-surround'               " because Will said it's pretty neat
+    Plug 'jordwalke/flatlandia'
+    Plug 'kana/vim-textobj-user'            " dependency for rubyblock
+    Plug 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
+    Plug 'mileszs/ack.vim'                  " searching via :Ack
+    Plug 'sheerun/vim-polyglot'             " A solid language pack for Vim.
+    Plug 'reedes/vim-colors-pencil'         " vim-colors-pencil
+    Plug 'reedes/vim-pencil'                " Rethinking Vim as a tool for writers
+    Plug 'scrooloose/nerdtree'              " file menu
+    Plug 't9md/vim-ruby-xmpfilter'          " inline ruby completion
+    Plug 'terryma/vim-multiple-cursors'     " multiple cursors
+    Plug 'tpope/vim-commentary'             " easily use comments
+    Plug 'tpope/vim-endwise'                " auto end addition in ruby
+    Plug 'jacekd/vim-iawriter'              " iA Writer Theme
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'vim-scripts/matchit.zip'          " dependency for rubyblock
+    Plug 'wesQ3/vim-windowswap'             " window swapping
+    Plug 'sjl/badwolf/'                     " badwolf theme
+    Plug 'tpope/vim-fugitive'               " Git in Vim
+    Plug 'ryanoasis/vim-devicons'           " Dev Icons
+    Plug 'gavocanov/vim-js-indent'
+    Plug 'thoughtbot/vim-rspec'             " Vim RSpec Runner
+    Plug 'itspriddle/vim-marked'            " Marked
+    Plug 'plasticboy/vim-markdown'
+		Plug 'kylef/apiblueprint.vim'           " Apiary
+    Plug 'whatyouhide/vim-gotham'           " Gotham Color Theme
+    Plug 'tyrannicaltoucan/vim-deep-space'  " Deep Space Color Theme
+    Plug 'joshdick/airline-onedark.vim'
+    Plug 'joshdick/airline-onedark.vim'
+    Plug 'joshdick/onedark.vim'
+    Plug 'lumiliet/vim-twig'
+    Plug 'jdkanani/vim-material-theme'
+    Plug 'mhartington/oceanic-next'
+    Plug 'dsawardekar/wordpress.vim'
 
-" Required:
-    set runtimepath+=~/.config/nvim/bundle/neobundle.vim/
-  endif
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
 
-" Required:
-  call neobundle#begin(expand('~/.config/nvim/bundle/'))
-  let pluginsExist = 1
-" Let NeoBundle manage NeoBundle
-" Required:
-  NeoBundleFetch 'Shougo/neobundle.vim'        " The manager of packages
-
-  NeoBundle 'scrooloose/nerdtree'              " file menu
-  NeoBundle 'ctrlpvim/ctrlp.vim'               " fuzzy file finder
-  NeoBundle 'benekastah/neomake'               " syntax checker
-  NeoBundle 'godlygeek/tabular'                " for indentation
-  NeoBundle 'airblade/vim-gitgutter'           " git diff in gutter
-  NeoBundle 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
-  NeoBundle 'tpope/vim-commentary'             " easily use comments
-  NeoBundle 'terryma/vim-multiple-cursors'     " multiple cursors
-  NeoBundle 'kchmck/vim-coffee-script'         " coffeescript syntax & indent
-  NeoBundle 'mileszs/ack.vim'                  " searching via :Ack
-  NeoBundle 'vim-ruby/vim-ruby'                " ruby syntax & indent
-  NeoBundle 'tpope/vim-markdown'               " markdown syntax & indent
-  NeoBundle 'pangloss/vim-javascript'          " javascript syntax & indent
-  NeoBundle 'othree/html5.vim'                 " html5 syntax & indent
-  NeoBundle 'tpope/vim-haml'                   " haml syntax & indent
-  NeoBundle 'fatih/vim-go'                     " go syntax / indent / plugins
-  NeoBundle 'mustache/vim-mustache-handlebars' " mustache/handlebars syntax & indent
-  NeoBundle 'heartsentwined/vim-emblem'        " emblem syntax & indent
-  NeoBundle 'thoughtbot/vim-rspec'             " Vim RSPEC runner
-  NeoBundle 'benmills/vimux'                   " Vim + Tmux Goodness
-  NeoBundle 'hunner/vim-plist'                 " PLIST Syntax Highlighting / indentation
-  NeoBundle 'tpope/vim-endwise'                " auto end addition in ruby
-  NeoBundle 'nelstrom/vim-textobj-rubyblock'   " adds ruby block knowledge
-  NeoBundle 'kana/vim-textobj-user'            " dependency for rubyblock
-  NeoBundle 'vim-scripts/matchit.zip'          " dependency for rubyblock
-  NeoBundle 't9md/vim-ruby-xmpfilter'          " inline ruby completion
-  NeoBundle 'wesQ3/vim-windowswap'             " window swapping
-  NeoBundle 'bling/vim-airline'                " nice looking footer bar
-  NeoBundle 'vim-airline/vim-airline-themes'
-  NeoBundle 'briancollins/vim-jst'             " JST / EJS syntax
-  NeoBundle 'mxw/vim-jsx'                      " vim syntax highlighting / indent for jsx
-  NeoBundle 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
-  NeoBundle 'jordwalke/flatlandia'
-  NeoBundle 'Yggdroot/indentLine'              " Line Indentation Markers
-  NeoBundle 'elzr/vim-json'                    " JSON jazz
-  NeoBundle 'elixir-lang/vim-elixir'           " Elixir
-  NeoBundle 'reedes/vim-pencil'                " Rethinking Vim as a tool for writers
-  NeoBundle 'reedes/vim-colors-pencil'         " vim-colors-pencil
-  NeoBundle 'itspriddle/vim-marked'            " Marked Support
-  NeoBundle 'Shougo/deoplete.nvim'             " autocomplete?
-  NeoBundle 'chriskempson/base16-vim'          " Base 16 Colors
-  NeoBundle 'ryanoasis/vim-devicons'           " Dev Icons
-
-  " end NeoBundle init (required)
-  filetype plugin indent on
-  call neobundle#end()
-  let pluginsExist=1
-  NeoBundleCheck
+  call plug#end()
 
 "= Interface ======================================================================================
 
   "- Appearance -----------------------------------------------------------------------------------
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
+    let $NVIM_TUI_ENABLE_TRUE_COLOR = 1 " True gui colors in terminal
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+
+    if (has('termguicolors'))
+      set termguicolors
+    endif
 
     syntax on                    " turn on syntax highilghting
 
     filetype plugin on           " enable loading plugins for filetypes
     filetype indent on           " enable loading 'indent files' for filetypes
 
-    set synmaxcol=400            " no syntax highlighting for lines longer than 200 cols
+    set synmaxcol=1000            " no syntax highlighting for lines longer than 400 cols
 
     set laststatus=2             " show status bar
 
@@ -100,7 +88,6 @@
     set visualbell               " use visual bell
 
     set laststatus=2             " Fix for statusbar toggling
-    set encoding=utf-8           " Fix special character encoding
 
     set cursorline               " show cursor line
     set ruler                    " cursor position in the lower right corner
@@ -130,6 +117,8 @@
       nmap <BS> <C-W>h
     endif
 
+    set splitright " vsplit splits to right side
+
   "- Wrapping -------------------------------------------------------------------------------------
 
     set nowrap                   " don't softwrap text
@@ -151,15 +140,31 @@
     autocmd FileType html setlocal indentkeys-=*<Return>
     autocmd FileType html.handlebars setlocal indentkeys-=*<Return>
     autocmd FileType eruby setlocal indentkeys-=*<Return>
+    autocmd FileType blade.php setlocal indentkeys-=*<Return>
+    au BufRead,BufNewFile *.blade.php* set filetype=html
+
+    " for php
+    " autocmd FileType php set tabstop=4
+    " autocmd FileType php set softtabstop=4
+    " autocmd FileType php set shiftwidth=4
+
+    " for haml
+    autocmd FileType haml let g:indentLine_enabled = 0
+
+    " for ruby
+    autocmd FileType conf set filetype=ruby
+
+    " git commit
+    autocmd Filetype gitcommit set colorcolumn=50,72
 
   "- Tab ---------------------------------------------------------------------------------------------
     function! InsertTabWrapper()
-      let col = col('.') - 1
-      if !col || getline('.')[col - 1] !~ '\k'
-          return "\<tab>"
-      else
-          return "\<c-p>"
-      endif
+        let col = col('.') - 1
+        if !col || getline('.')[col - 1] !~ '\k'
+            return "\<tab>"
+        else
+            return "\<c-p>"
+        endif
     endfunction
     inoremap <expr> <tab> InsertTabWrapper()
     inoremap <s-tab> <c-n>
@@ -172,9 +177,10 @@
     set incsearch                " incremental search
 
   "- Theme ----------------------------------------------------------------------------------------
+    " let g:airline#extensions#tabline#enabled = 1
 
     let &colorcolumn=join(range(81,999),",")
-    highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
+    " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
     highlight Search guifg=#FFFFFF guibg=#FC0D1B
 
     if g:myTheme == 'solarized - dark'
@@ -194,13 +200,166 @@
       let g:indentLine_color_gui = '#EEE8D7'
       let g:airline_theme='solarized'
 
+    elseif g:myTheme == 'base16-ocean-dark'
+      colorscheme base16-ocean
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#343D46
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='base16'
+
+    elseif g:myTheme == 'base16-oceanicnext'
+      " colorscheme base16-oceanicnext
+      colorscheme OceanicNext
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='base16'
+      let g:gitgutter_override_sign_column_highlight = 1
+      let g:airline_theme='oceanicnext'
+
+    elseif g:myTheme == 'gotham'
+      colorscheme gotham
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='gotham'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'deep-space'
+      colorscheme deep-space
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='deep_space'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'lucario'
+      colorscheme lucario
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='solarized'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'gruvbox'
+      let g:gruvbox_italic=1
+      let g:gruvbox_contrast_light="hard"
+      colorscheme gruvbox
+      set background=light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      let g:indentLine_color_gui = '#EEE8D7'
+      let g:airline_theme='solarized'
+
+    elseif g:myTheme == 'badwolf'
+      colorscheme badwolf
+      set background=light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      let g:indentLine_color_gui = '#EEE8D7'
+      let g:airline_theme='base16'
+
+    elseif g:myTheme == 'base16-railscasts'
+      colorscheme base16-railscasts
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#343D46
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='base16'
+
+    elseif g:myTheme == 'flatlandia'
+      colorscheme flatlandia
+      set background=dark
+      highlight CursorLineNr guifg=#6DAAC8 gui=bold
+      highlight Search guifg=#FFFFFF guibg=#B9D87C
+      highlight ColorColumn ctermbg=235 guibg=#2C2F31
+      let g:indentLine_color_gui = '#2C2F31'
+
     elseif g:myTheme == 'onedark'
       set background=dark
       colorscheme onedark
-      highlight CursorLineNr guifg=#E4BF7F gui=bold
-      highlight ColorColumn ctermbg=235 guibg=#1E222A
+      " highlight CursorLineNr guifg=#E4BF7F gui=bold
+      highlight CursorLineNr guifg=#363A4E gui=bold
+      highlight CursorLine ctermbg=235 guibg=#363A4E
+      " highlight ColorColumn ctermbg=235 guibg=#1E222A
+      highlight ColorColumn ctermbg=235 guibg=#22252B
       let g:indentLine_color_gui = '#515253'
+      let g:airline_theme='onedark'
+
+    elseif g:myTheme == 'material'
+      set background=dark
+      colorscheme material-theme
+      " highlight CursorLineNr guifg=#E4BF7F gui=bold
+      highlight CursorLineNr guifg=#B9E691 gui=bold
+      highlight CursorLine ctermbg=235 guibg=#37474F
+      " highlight ColorColumn ctermbg=235 guibg=#1E222A
+      highlight ColorColumn ctermbg=235 guibg=#22252B
+      highlight SignColumn guifg=#263238 guibg=#263238
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      let g:indentLine_color_gui = '#515253'
+      let g:airline_theme='onedark'
     endif
+
+
+    highlight Comment gui=italic
+    highlight Comment cterm=italic
+    highlight htmlArg gui=italic
+    highlight htmlArg cterm=italic
+    highlight jsxChild gui=italic
+    highlight jsxChild cterm=italic
+    " highlight xmlString gui=italic
+    " highlight xmlString cterm=italic
+
 
 "= Utilities ======================================================================================
 
@@ -214,8 +373,9 @@
   set backspace=indent,eol,start            " make backspace behave as expected
 
   " easy splits and switches over (\v)
-  nnoremap <leader>v <C-w>v<C-w><C-w>
+  nnoremap <leader>v <C-w>v
   nnoremap <leader>h <C-w>s<C-w><C-w>
+  nnoremap <leader>q :vsplit<cr> :term<cr>
 
   " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
   imap jj <esc>
@@ -225,6 +385,9 @@
   " nmap <C-j> <C-w>j
   " nmap <C-k> <C-w>k
   " nmap <C-l> <C-w>l
+  " search navigation
+  nnoremap <Space>] :cn<cr>
+  nnoremap <Space>[ :cp<cr>
 
   let g:tmux_navigator_no_mappings = 1
   nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
@@ -254,6 +417,8 @@
 
   " insert a binding.pry under cursor
   map <Leader>d orequire 'pry'<cr>binding.pry<esc>:w<cr>
+  map <Leader>g odebugger;<esc>:w<cr>
+  map <Leader>bb :term bundle install<cr>
 
 "= Bundle Settings=================================================================================
 
@@ -263,6 +428,24 @@
 
   "- Markdown ------------------------------------------------------------------------------------
   let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
+  let g:vim_markdown_conceal = 0
+  let g:vim_markdown_folding_disabled=1
+  au BufRead,BufNewFile *.txt set filetype=markdown
+
+  let g:pencil#wrapModeDefault = 'soft'
+
+  augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd call pencil#init()
+    autocmd FileType text         call pencil#init()
+    " autocmd FileType markdown,mkd colorscheme iawriter
+    " autocmd FileType markdown,mkd set background=light
+    " autocmd FileType markdown,mkd set guifont=Cousine:h12
+
+    let g:pencil_terminal_italics = 1
+    let g:pencil_neutral_code_bg = 1
+    let g:pencil#conceallevel = 0
+  augroup END
 
   "- NerdTree -------------------------------------------------------------------------------------
   " toggle NerdTree (Control + b)
@@ -303,32 +486,53 @@
   vmap <Leader>{ :Tabularize /{<CR>
 
   "- Control-P ------------------------------------------------------------------------------------
-  " Don't use caching
-  let g:ctrlp_use_caching = 0
+  let g:ctrlp_use_caching = 0           " Use caching
+  let g:ctrlp_clear_cache_on_exit = 0   " Persist cache across sessions
+  let g:ctrlp_show_hidden = 1           " Show hidden files
+
+  " Ignore files in `.gitignore`
+  " let g:ctrlp_user_command = {
+  "   \ 'types': {
+  "     \ 1: ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard'],
+  "     \ },
+  "   \ 'fallback': 'find %s -type f'
+  "   \ }
+
   let g:ctrlp_working_path_mode = ''
+  let g:ctrlp_match_window = 'top,order:ttb'
+
+  " Ignore specific files and folders
+  let g:ctrlp_custom_ignore = {
+    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log))',
+    \ 'file': '\v\.(jpg|png|gif|db)'
+    \ }
 
   "- JSX ------------------------------------------------------------------------------------
   let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
   " Custom ignore paths
-  set wildignore+=*/tmp/*,*/bin/*,*/bower_components/*,*.so,*.swp,*.zip     " MacOSX/Linux
-  let g:ctrlp_custom_ignore = {
-    \ 'dir':  'node_modules',
-    \ }
+  set wildignore+=*/tmp/*,*/bin/*,*/.git/*,*/node_modules/*,*/bower_components/*,*.so,*.swp,*.zip,*.gitkeep     " MacOSX/Linux
 
   "- Ack ------------------------------------------------------------------------------------------
   let g:ackprg = 'ag --nogroup --nocolor --column'
 
   "- Rspec.vim  -----------------------------------------------------------------------------------
   " use spring w/ rspec runner
-  let g:rspec_command = 'term bundle exec bin/rspec {spec}'
+  " let g:rspec_command = 'term bin/spring rspec {spec}'
   " dont use spring w/ rspec runner
-  "let g:rspec_command = 'term bundle exec rspec {spec}'
-  let g:rspec_runner = 'os_x_iterm'
+  " let g:rspec_command = 'term bundle exec rspec {spec}'
+  " let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  let g:rspec_runner = 'os_x_iterm2'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
   map <Leader>l :call RunLastSpec()<CR>
   map <Leader>a :call RunAllSpecs()<CR>
+  map <Leader>S :! bin/spring<CR>
+
+  "- ENV
+  au BufRead,BufNewFile *.env.* set filetype=sh
+  au BufRead,BufNewFile env.sample set filetype=sh
 
   "- XMPFilter  ------------------------------------------------------------------------------------
   " map <C-b> <Plug>(xmpfilter-mark)<Plug>(xmpfilter-run)
@@ -339,11 +543,22 @@
   let g:indentLine_noConcealCursor = 1
   let g:indentLine_faster = 1
 
+  autocmd FileType haml,scss :IndentLinesDisable
+
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
+  " let g:airline#extensions#tabline#enabled = 1
+  " let g:airline#extensions#tabline#show_buffers = 0
+  " let g:airline_section_a = airline#section#create(['mode'])
+  " let g:airline_section_b = airline#section#create(['%f'])
 
   "= Deoplete ========================================================================================
   let g:deoplete#enable_at_startup = 1
+
+  "= Emmet ===========================================================================================
+  imap kk <C-y>,<ESC>
+  " imap ll <C-y>j<ESC>
+  nmap <C-i><C-i> i<C-y>j<ESC>
 
   "= Goyo & Limelight ===============================================================================
   autocmd User GoyoEnter Limelight
@@ -386,6 +601,15 @@
   "- HBARS ------------------------------------------------------------------------------------
   au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby, for hbars files
 
+  "- Mustache  ------------------------------------------------------------------------------------
+  au BufNewFile,BufRead *.html.mustache set ft=mustache
+
+  "- Mustache  ------------------------------------------------------------------------------------
+  au BufNewFile,BufRead *.hbs set ft=mustache
+
+  "- Elm
+  au BufNewFile,BufRead *.elm set ft=elm
+
 "= Enter Key ======================================================================================
 
   function! MapCR()
@@ -412,6 +636,8 @@
   :nnoremap <cr> :call MapCR()<cr>
 
 "= Terminal ========================================================
+  :tnoremap qq <C-\><C-n>
+
   " Terminal color definitions
   let s:cterm00 = "00"
   let s:cterm01 = "236"
@@ -466,6 +692,59 @@ function! s:ExecuteInShell(command)
   wincmd k
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
+
+" Requires 'jq' (brew install jq)
+function! s:PrettyJSON()
+  %!jq .
+  set filetype=json
+endfunction
+command! PrettyJSON :call <sid>PrettyJSON()
+
+" Prevent the terminal from taking the window with it when it closes.
+"
+" The last two screens worth of text is stored in register `t`
+" function! s:termclose() abort
+"   let first = max([1, line('w0') - winheight(0)])
+"   call setreg('t', getline(first, line('$')), 'V')
+"   let buf = expand('#')
+"   if !empty(buf) && buflisted(buf) && bufnr(buf) != bufnr('%')
+"     execute 'autocmd BufWinLeave <buffer> split' buf
+"     execute 'doautocmd FileType' getbufvar(buf, '&filetype')
+"   endif
+
+"   execute ':edit'
+" endfunction
+
+" function! s:tmuxnav(dir) abort
+"   let b:_tmuxnav = 1
+"   let buf = bufnr('%')
+"   execute 'TmuxNavigate'.a:dir
+
+"   if bufnr('%') == buf
+"     " Buffer didn't actually change.
+"     startinsert
+"   endif
+" endfunction
+
+" function! s:termopen() abort
+"   setlocal nospell
+"   tnoremap <silent><buffer> <m-h> <c-\><c-n>:<c-u>call <sid>tmuxnav('Left')<cr>
+"   tnoremap <silent><buffer> <m-j> <c-\><c-n>:<c-u>call <sid>tmuxnav('Down')<cr>
+"   tnoremap <silent><buffer> <m-k> <c-\><c-n>:<c-u>call <sid>tmuxnav('Up')<cr>
+"   tnoremap <silent><buffer> <m-l> <c-\><c-n>:<c-u>call <sid>tmuxnav('Right')<cr>
+
+"   autocmd BufEnter <buffer>
+"         \ if exists('b:_tmuxnav') |
+"         \   unlet! b:_tmuxnav |
+"         \   startinsert |
+"         \ endif
+" endfunction
+
+" augroup vimrc_term
+"   autocmd!
+"   autocmd TermOpen * call s:termopen()
+"   autocmd TermClose *:$SHELL,*:\$SHELL call s:termclose()
+" augroup END
 
 "= Because I save dumb file names.
 :autocmd BufWritePre [:;]*
