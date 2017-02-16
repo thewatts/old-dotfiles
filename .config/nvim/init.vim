@@ -1,10 +1,12 @@
 "= Initial setup ==================================================================================
   " Scheme Config
-  let g:myTheme = 'material'
+  " let g:myTheme = 'material'
   " let g:myTheme = 'base16-oceanicnext'
   " let g:myTheme = 'onedark'
   " let g:myTheme = 'gotham'
   " let g:myTheme = 'solarized - light'
+  let g:myTheme = 'base16 - light'
+  let g:myTheme  = 'flatlandia'
 
   " use Vim settings, rather than Vi settings
   filetype off
@@ -13,7 +15,8 @@
 
   call plug#begin()
 
-    Plug 'Yggdroot/indentLine'              " Line Indentation Markers
+    " Plug 'Yggdroot/indentLine'              ' Line Indentation Markers
+    Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
     Plug 'airblade/vim-gitgutter'           " git diff in gutter
     Plug 'benekastah/neomake'               " syntax checker
     Plug 'benmills/vimux'                   " Vim + Tmux Goodness
@@ -56,13 +59,29 @@
     Plug 'jdkanani/vim-material-theme'
     Plug 'mhartington/oceanic-next'
     Plug 'dsawardekar/wordpress.vim'
+    Plug 'exu/pgsql.vim'
+    Plug 'jparise/vim-graphql'             "graphql syntax"
 
-    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
-    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+    " Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
+    " Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+    " Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+    " Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+
+    if has('nvim')
+      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
+      Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
+    endif
+
+    " == JavaScript syntax highlighting ==
+    Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
 
   call plug#end()
+
+  let g:python3_host_prog = '/usr/local/bin/python3'
+
 
 "= Interface ======================================================================================
 
@@ -136,6 +155,9 @@
     set softtabstop=2            " use 2 spaces for a <Tab>
     set expandtab
 
+    let g:indent_guides_color_change_percent = 2
+    let g:indent_guides_enable_on_vim_startup = 1
+
     " for html
     autocmd FileType html setlocal indentkeys-=*<Return>
     autocmd FileType html.handlebars setlocal indentkeys-=*<Return>
@@ -143,16 +165,25 @@
     autocmd FileType blade.php setlocal indentkeys-=*<Return>
     au BufRead,BufNewFile *.blade.php* set filetype=html
 
+    " for json
+    au BufNewFile,BufRead .eslintrc set filetype=json
+
     " for php
     " autocmd FileType php set tabstop=4
     " autocmd FileType php set softtabstop=4
     " autocmd FileType php set shiftwidth=4
 
     " for haml
-    autocmd FileType haml let g:indentLine_enabled = 0
+    " autocmd Filetype * if &ft!="haml"|IndentGuidesDisable|endif
+    " autocmd Filetype * if &ft!="haml"|let g:indentLine_enabled = 1|endif
+    " autocmd FileType haml let g:indentLine_enabled = 0
+    " autocmd FileType haml IndentGuidesEnable
+    " autocmd FileType haml let g:indentLine_leadingSpaceEnabled = 0
+    au BufNewFile,BufRead *.haml.example set filetype=haml
 
     " for ruby
     autocmd FileType conf set filetype=ruby
+    au BufNewFile,BufRead *.rb.example set filetype=ruby
 
     " git commit
     autocmd Filetype gitcommit set colorcolumn=50,72
@@ -192,13 +223,24 @@
       let g:indentLine_color_gui = '#0A3641'
 
     elseif g:myTheme == 'solarized - light'
-      colorscheme base16-solarized
+      colorscheme base16-solarized-light
       set background=light
       highlight CursorLineNr guifg=#2E8CCF gui=bold
       highlight Search guifg=#FFFFFF guibg=#FC0D1B
       highlight ColorColumn ctermbg=235 guibg=#EEE8D6
       let g:indentLine_color_gui = '#EEE8D7'
       let g:airline_theme='solarized'
+
+    elseif g:myTheme == 'base16 - light'
+      " colorscheme base16-grayscale-light
+      colorscheme base16-github
+      set background=light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      highlight ColorColumn ctermbg=235 guibg=#EDEDED
+      let g:indentLine_color_gui = '#EEE8D7'
+      let g:airline_theme='base16_grayscale'
 
     elseif g:myTheme == 'base16-ocean-dark'
       colorscheme base16-ocean
@@ -320,6 +362,9 @@
       highlight ColorColumn ctermbg=235 guibg=#2C2F31
       let g:indentLine_color_gui = '#2C2F31'
 
+      highlight NeomakeErrorSign ctermfg=white ctermbg=235 guibg=#2C2F31
+      highlight NeomakeWarningSign ctermfg=white ctermbg=235 guibg=#2C2F31
+
     elseif g:myTheme == 'onedark'
       set background=dark
       colorscheme onedark
@@ -359,6 +404,7 @@
     highlight jsxChild cterm=italic
     " highlight xmlString gui=italic
     " highlight xmlString cterm=italic
+
 
 
 "= Utilities ======================================================================================
@@ -423,8 +469,10 @@
 "= Bundle Settings=================================================================================
 
   "- Neomake ------------------------------------------------------------------------------------
-  let g:neomake_javascript_enabled_makers = ['jshint']
   autocmd! BufWritePost * Neomake
+  let g:neomake_javascript_enabled_makers = ['eslint']
+  let g:neomake_jsx_enabled_makers = ['eslint']
+  let g:neomake_javascript_eslint_exe = system('PATH=$(npm bin):$PATH && which eslint | tr -d "\n"')
 
   "- Markdown ------------------------------------------------------------------------------------
   let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
@@ -500,10 +548,11 @@
 
   let g:ctrlp_working_path_mode = ''
   let g:ctrlp_match_window = 'top,order:ttb'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
   " Ignore specific files and folders
   let g:ctrlp_custom_ignore = {
-    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log))',
+    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log)|ios/build)',
     \ 'file': '\v\.(jpg|png|gif|db)'
     \ }
 
@@ -521,8 +570,10 @@
   " let g:rspec_command = 'term bin/spring rspec {spec}'
   " dont use spring w/ rspec runner
   " let g:rspec_command = 'term bundle exec rspec {spec}'
-  " let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  " let g:rspec_command = 'vsplit | term bundle exec rspec {spec} --format=progress'
   let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  " let g:rspec_command = 'tabnew | term bundle exec bin/rspec {spec}'
+  "
   let g:rspec_runner = 'os_x_iterm2'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -542,8 +593,6 @@
   let g:indentLine_char = '¦'
   let g:indentLine_noConcealCursor = 1
   let g:indentLine_faster = 1
-
-  autocmd FileType haml,scss :IndentLinesDisable
 
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
@@ -745,6 +794,21 @@ command! PrettyJSON :call <sid>PrettyJSON()
 "   autocmd TermOpen * call s:termopen()
 "   autocmd TermClose *:$SHELL,*:\$SHELL call s:termclose()
 " augroup END
+"
+
+function! Lint()
+  if &filetype =~ 'javascript'
+    Neomake eslint
+  else
+    Neomake
+  end
+endfunction
+
+augroup lint_events
+  autocmd!
+  autocmd BufWritePost * call Lint()
+augroup end
+
 
 "= Because I save dumb file names.
 :autocmd BufWritePre [:;]*
