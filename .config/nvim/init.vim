@@ -1,14 +1,21 @@
 "= Initial setup ==================================================================================
   " Scheme Config
+  " let g:myTheme = 'material'
+  " let g:myTheme = 'base16-oceanicnext'
+  " let g:myTheme = 'gotham'
+" let g:myTheme = 'solarized - light'
   let g:myTheme = 'base16 - light'
-
-  " use Vim settings, rather than Vi settings
-  filetype off
+  " let g:myTheme  = 'flatlandia'
+  " let g:myTheme  = 'nova'
+" use Vim settings, rather than Vi settings filetype off
   set nocompatible
   set encoding=utf-8  " Fix special character encoding
 
   call plug#begin()
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+    Plug 'junegunn/fzf.vim'
 
+    " Plug 'Yggdroot/indentLine'              ' Line Indentation Markers
     Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
     Plug 'airblade/vim-gitgutter'           " git diff in gutter
     Plug 'benekastah/neomake'               " syntax checker
@@ -16,7 +23,7 @@
     Plug 'bling/vim-airline'                " nice looking footer bar
     Plug 'chriskempson/base16-vim'          " Base 16 Colors
     Plug 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
-    Plug 'ctrlpvim/ctrlp.vim'               " fuzzy file finder
+    " Plug 'ctrlpvim/ctrlp.vim'               ' fuzzy file finder
     Plug 'godlygeek/tabular'                " for indentation
     Plug 'tpope/vim-surround'               " because Will said it's pretty neat
     Plug 'jordwalke/flatlandia'
@@ -31,6 +38,7 @@
     Plug 'terryma/vim-multiple-cursors'     " multiple cursors
     Plug 'tpope/vim-commentary'             " easily use comments
     Plug 'tpope/vim-endwise'                " auto end addition in ruby
+    Plug 'tpope/vim-dispatch'               " asynchronous build and test dispatcher
     Plug 'jacekd/vim-iawriter'              " iA Writer Theme
     Plug 'vim-airline/vim-airline-themes'
     Plug 'vim-scripts/matchit.zip'          " dependency for rubyblock
@@ -40,20 +48,24 @@
     Plug 'ryanoasis/vim-devicons'           " Dev Icons
     Plug 'gavocanov/vim-js-indent'
     Plug 'thoughtbot/vim-rspec'             " Vim RSpec Runner
+    " Plug 'janko-m/vim-test'
     Plug 'itspriddle/vim-marked'            " Marked
     Plug 'plasticboy/vim-markdown'
 		Plug 'kylef/apiblueprint.vim'           " Apiary
     Plug 'whatyouhide/vim-gotham'           " Gotham Color Theme
     Plug 'tyrannicaltoucan/vim-deep-space'  " Deep Space Color Theme
-    Plug 'joshdick/airline-onedark.vim'
-    Plug 'joshdick/airline-onedark.vim'
-    Plug 'joshdick/onedark.vim'
+    Plug 'xolox/vim-misc'                   " needed for colorscheme-switcher
+    Plug 'xolox/vim-colorscheme-switcher'
     Plug 'lumiliet/vim-twig'
     Plug 'jdkanani/vim-material-theme'
     Plug 'mhartington/oceanic-next'
     Plug 'dsawardekar/wordpress.vim'
     Plug 'exu/pgsql.vim'
-    Plug 'jparise/vim-graphql'             "graphql syntax"
+    Plug 'jparise/vim-graphql'             "graphql syntax
+    Plug 'elixir-lang/vim-elixir'          " elixir
+    Plug 'sunaku/vim-ruby-minitest'
+    Plug 'trevordmiller/nova-vim'
+    " Plug 'kevinsjoberg/vim-test-neovim-error-only'
 
     " Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
     " Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
@@ -67,11 +79,6 @@
 
     " == JavaScript syntax highlighting ==
     Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
-=======
-
-    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
-    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
->>>>>>> Update NeoVim Config
     Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
@@ -79,6 +86,7 @@
   call plug#end()
 
   let g:python3_host_prog = '/usr/local/bin/python3'
+
 
 "= Interface ======================================================================================
 
@@ -134,6 +142,7 @@
     endif
 
     set splitright " vsplit splits to right side
+    set splitbelow " split splits to bottom
 
   "- Wrapping -------------------------------------------------------------------------------------
 
@@ -165,6 +174,11 @@
     " for json
     au BufNewFile,BufRead .eslintrc set filetype=json
 
+    " for php
+    " autocmd FileType php set tabstop=4
+    " autocmd FileType php set softtabstop=4
+    " autocmd FileType php set shiftwidth=4
+
     " for haml
     " autocmd Filetype * if &ft!="haml"|IndentGuidesDisable|endif
     " autocmd Filetype * if &ft!="haml"|let g:indentLine_enabled = 1|endif
@@ -176,10 +190,6 @@
     " for ruby
     autocmd FileType conf set filetype=ruby
     au BufNewFile,BufRead *.rb.example set filetype=ruby
-    autocmd FileType haml let g:indentLine_enabled = 0
-
-    " for ruby
-    autocmd FileType conf set filetype=ruby
 
     " git commit
     autocmd Filetype gitcommit set colorcolumn=50,72
@@ -206,7 +216,7 @@
   "- Theme ----------------------------------------------------------------------------------------
     " let g:airline#extensions#tabline#enabled = 1
 
-    let &colorcolumn=join(range(81,999),",")
+    let &colorcolumn=join(range(81,101),",")
     " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
     highlight Search guifg=#FFFFFF guibg=#FC0D1B
 
@@ -228,8 +238,12 @@
       let g:airline_theme='solarized'
 
     elseif g:myTheme == 'base16 - light'
-      " colorscheme base16-grayscale-light
-      colorscheme base16-github
+      colorscheme base16-grayscale-light
+      " colorscheme base16-github
+      " colorscheme base16-flat
+      " colorscheme base16-cupcake
+      " colorscheme base16-harmonic16-light
+      " colorscheme base16-google-light
       set background=light
       highlight CursorLineNr guifg=#2E8CCF gui=bold
       highlight Search guifg=#FFFFFF guibg=#FC0D1B
@@ -237,6 +251,9 @@
       highlight ColorColumn ctermbg=235 guibg=#EDEDED
       let g:indentLine_color_gui = '#EEE8D7'
       let g:airline_theme='base16_grayscale'
+      " highlight Comment guifg=#A32B2E
+      " highlight Comment guifg=#348DCD
+      highlight Comment guifg=#415D84
 
     elseif g:myTheme == 'base16-ocean-dark'
       colorscheme base16-ocean
@@ -260,100 +277,8 @@
       highlight GitGutterChange guifg=#DBA94E guibg=#17272F
       highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
       highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
-
-      " Git Gutter
-      let g:indentLine_color_gui = '#343D46'
-      let g:airline_theme='base16'
-      let g:gitgutter_override_sign_column_highlight = 1
-      let g:airline_theme='oceanicnext'
-
-    elseif g:myTheme == 'gotham'
-      colorscheme gotham
-      set background=dark
-      highlight CursorLineNr guifg=#EBCB8B
-      highlight LineNr guibg=#17272F
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn guibg=#17272F
-      highlight SignColumn guifg=#17272F guibg=#17272F
-      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
-      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
-
-      " Git Gutter
-      let g:indentLine_color_gui = '#343D46'
-      let g:airline_theme='gotham'
-      let g:gitgutter_override_sign_column_highlight = 1
-
-    elseif g:myTheme == 'deep-space'
-      colorscheme deep-space
-      set background=dark
-      highlight CursorLineNr guifg=#EBCB8B
-      highlight LineNr guibg=#17272F
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn guibg=#17272F
-      highlight SignColumn guifg=#17272F guibg=#17272F
-      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
-      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
-
-      " Git Gutter
-      let g:indentLine_color_gui = '#343D46'
-      let g:airline_theme='deep_space'
-      let g:gitgutter_override_sign_column_highlight = 1
-
-    elseif g:myTheme == 'lucario'
-      colorscheme lucario
-      set background=dark
-      highlight CursorLineNr guifg=#EBCB8B
-      highlight LineNr guibg=#17272F
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn guibg=#17272F
-      highlight SignColumn guifg=#17272F guibg=#17272F
-      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
-      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
-
-      " Git Gutter
-      let g:indentLine_color_gui = '#343D46'
-      let g:airline_theme='solarized'
-      let g:gitgutter_override_sign_column_highlight = 1
-
-    elseif g:myTheme == 'gruvbox'
-      let g:gruvbox_italic=1
-      let g:gruvbox_contrast_light="hard"
-      colorscheme gruvbox
-      set background=light
-      highlight CursorLineNr guifg=#2E8CCF gui=bold
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
-      let g:indentLine_color_gui = '#EEE8D7'
-      let g:airline_theme='solarized'
-
-    elseif g:myTheme == 'base16-ocean-dark'
-      colorscheme base16-ocean
-      set background=dark
-      highlight CursorLineNr guifg=#EBCB8B gui=bold
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn ctermbg=235 guibg=#343D46
-      let g:indentLine_color_gui = '#343D46'
-      let g:airline_theme='base16'
-
-    elseif g:myTheme == 'base16-oceanicnext'
-      " colorscheme base16-oceanicnext
-      colorscheme OceanicNext
-      set background=dark
-      highlight CursorLineNr guifg=#EBCB8B
-      highlight LineNr guibg=#17272F
-      highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn guibg=#17272F
-      highlight SignColumn guifg=#17272F guibg=#17272F
-      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
-      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
-      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+      " highlight Comment guifg=#629ACA
+      highlight Comment guifg=#FFFD6D
 
       " Git Gutter
       let g:indentLine_color_gui = '#343D46'
@@ -455,17 +380,6 @@
       highlight NeomakeErrorSign ctermfg=white ctermbg=235 guibg=#2C2F31
       highlight NeomakeWarningSign ctermfg=white ctermbg=235 guibg=#2C2F31
 
-    elseif g:myTheme == 'onedark'
-      set background=dark
-      colorscheme onedark
-      " highlight CursorLineNr guifg=#E4BF7F gui=bold
-      highlight CursorLineNr guifg=#363A4E gui=bold
-      highlight CursorLine ctermbg=235 guibg=#363A4E
-      " highlight ColorColumn ctermbg=235 guibg=#1E222A
-      highlight ColorColumn ctermbg=235 guibg=#22252B
-      let g:indentLine_color_gui = '#515253'
-      let g:airline_theme='onedark'
-
     elseif g:myTheme == 'material'
       set background=dark
       colorscheme material-theme
@@ -482,18 +396,44 @@
       highlight GitGutterDelete guifg=#C4E78D guibg=#263238
 
       let g:indentLine_color_gui = '#515253'
-      let g:airline_theme='onedark'
+
+    elseif g:myTheme == 'nova'
+      set background=dark
+      colorscheme nova
+      " highlight CursorLineNr guifg=#E4BF7F gui=bold
+      highlight CursorLineNr guifg=#B9E691 gui=bold
+      highlight CursorLine ctermbg=235 guibg=#37474F
+      " highlight ColorColumn ctermbg=235 guibg=#1E222A
+      highlight ColorColumn ctermbg=235 guibg=#38474F
+      highlight SignColumn guifg=#263238 guibg=#263238
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      let g:indentLine_color_gui = '#515253'
     endif
 
 
+    " For Italics
+    "
     highlight Comment gui=italic
     highlight Comment cterm=italic
     highlight htmlArg gui=italic
     highlight htmlArg cterm=italic
     highlight jsxChild gui=italic
     highlight jsxChild cterm=italic
-    " highlight xmlString gui=italic
-    " highlight xmlString cterm=italic
+    highlight xmlAttrib gui=italic guifg=#60ff60
+    highlight jsObjectKey guifg=#60ff60
+    " highlight xmlAttrib cterm=italic
+
+    highlight jsonKeyword guifg=#FFFD6D
+
+    set t_ZH=^[[3m
+    set t_ZR=^[[23m
+
+
 
 "= Utilities ======================================================================================
 
@@ -622,9 +562,9 @@
   vmap <Leader>{ :Tabularize /{<CR>
 
   "- Control-P ------------------------------------------------------------------------------------
-  let g:ctrlp_use_caching = 0           " Use caching
-  let g:ctrlp_clear_cache_on_exit = 0   " Persist cache across sessions
-  let g:ctrlp_show_hidden = 1           " Show hidden files
+  " let g:ctrlp_use_caching = 0           " Use caching
+  " let g:ctrlp_clear_cache_on_exit = 0   " Persist cache across sessions
+  " let g:ctrlp_show_hidden = 1           " Show hidden files
 
   " Ignore files in `.gitignore`
   " let g:ctrlp_user_command = {
@@ -634,19 +574,15 @@
   "   \ 'fallback': 'find %s -type f'
   "   \ }
 
-  let g:ctrlp_working_path_mode = ''
-  let g:ctrlp_match_window = 'top,order:ttb'
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+  " let g:ctrlp_working_path_mode = ''
+  " let g:ctrlp_match_window = 'top,order:ttb'
+  " let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
-  " Ignore specific files and folders
-  let g:ctrlp_custom_ignore = {
-    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log)|ios/build)',
-
-  " Ignore specific files and folders
-  let g:ctrlp_custom_ignore = {
-    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log))',
-    \ 'file': '\v\.(jpg|png|gif|db)'
-    \ }
+  " " Ignore specific files and folders
+  " let g:ctrlp_custom_ignore = {
+  "   \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log)|ios/build)',
+  "   \ 'file': '\v\.(jpg|png|gif|db)'
+  "   \ }
 
   "- JSX ------------------------------------------------------------------------------------
   let g:jsx_ext_required = 0 " Allow JSX in normal JS files
@@ -663,17 +599,28 @@
   " dont use spring w/ rspec runner
   " let g:rspec_command = 'term bundle exec rspec {spec}'
   " let g:rspec_command = 'vsplit | term bundle exec rspec {spec} --format=progress'
-  let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  " let g:rspec_command = 'vsplit | term bin/rspec {spec}'
+  " let g:rspec_command = 'vsplit | term bundle exec rspec {spec}'
   " let g:rspec_command = 'tabnew | term bundle exec bin/rspec {spec}'
   "
-  " let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
-  let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
   let g:rspec_runner = 'os_x_iterm2'
+  "
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
   map <Leader>l :call RunLastSpec()<CR>
   map <Leader>a :call RunAllSpecs()<CR>
-  map <Leader>S :! bin/spring<CR>
+
+  " nmap <silent> <leader>t :TestFile<CR>
+  " nmap <silent> <leader>s :TestNearest<CR>
+  " nmap <silent> <leader>a :TestSuite<CR>
+  " nmap <silent> <leader>l :TestLast<CR>
+
+  let test#strategy = "neovim"
+  let test#strategy = 'neovim_error_only'
+
+  if has("nvim")
+    let g:rspec_command = 'vsplit | term bin/rspec {spec}'
+  endif
 
   "- ENV
   au BufRead,BufNewFile *.env.* set filetype=sh
@@ -687,8 +634,6 @@
   let g:indentLine_char = '¦'
   let g:indentLine_noConcealCursor = 1
   let g:indentLine_faster = 1
-
-  autocmd FileType haml,scss :IndentLinesDisable
 
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
@@ -718,6 +663,11 @@
 
   function! ExecuteGoCode()              " for running Golang on enter
     exec ":!clear && go run " . @%
+  endfunction
+
+  "- Elixir ---------------------------------------------------------------------------------------
+  function! ExecuteElixirCode()              " for running Elixir on enter
+    exec ":split | term elixir " . @%
   endfunction
 
   "- C ---------------------------------------------------------------------------------------
@@ -764,14 +714,19 @@
     if (&ft=='go')
       :call ExecuteGoCode()
     endif
+    if (&ft=='elixir')
+      :call ExecuteElixirCode()
+    endif
     if (&ft=='ruby')
-      :call RunLastSpec()
+      " :call RunLastSpec()
+      TestLast
     endif
     if (&ft=='haml')
-      :call RunLastSpec()
+      " :call RunLastSpec()
+      TestLast
     endif
     if (&ft=='html')
-      :call RunLastSpec()
+      RunLastSpec
     endif
     if (&ft=='rust')
       :call ExecuteRustCode()
@@ -845,6 +800,94 @@ function! s:PrettyJSON()
 endfunction
 command! PrettyJSON :call <sid>PrettyJSON()
 
+" Prevent the terminal from taking the window with it when it closes.
+"
+" The last two screens worth of text is stored in register `t`
+" function! s:termclose() abort
+"   let first = max([1, line('w0') - winheight(0)])
+"   call setreg('t', getline(first, line('$')), 'V')
+"   let buf = expand('#')
+"   if !empty(buf) && buflisted(buf) && bufnr(buf) != bufnr('%')
+"     execute 'autocmd BufWinLeave <buffer> split' buf
+"     execute 'doautocmd FileType' getbufvar(buf, '&filetype')
+"   endif
+
+"   execute ':edit'
+" endfunction
+
+" function! s:tmuxnav(dir) abort
+"   let b:_tmuxnav = 1
+"   let buf = bufnr('%')
+"   execute 'TmuxNavigate'.a:dir
+
+"   if bufnr('%') == buf
+"     " Buffer didn't actually change.
+"     startinsert
+"   endif
+" endfunction
+
+" function! s:termopen() abort
+"   setlocal nospell
+"   tnoremap <silent><buffer> <m-h> <c-\><c-n>:<c-u>call <sid>tmuxnav('Left')<cr>
+"   tnoremap <silent><buffer> <m-j> <c-\><c-n>:<c-u>call <sid>tmuxnav('Down')<cr>
+"   tnoremap <silent><buffer> <m-k> <c-\><c-n>:<c-u>call <sid>tmuxnav('Up')<cr>
+"   tnoremap <silent><buffer> <m-l> <c-\><c-n>:<c-u>call <sid>tmuxnav('Right')<cr>
+
+"   autocmd BufEnter <buffer>
+"         \ if exists('b:_tmuxnav') |
+"         \   unlet! b:_tmuxnav |
+"         \   startinsert |
+"         \ endif
+" endfunction
+
+" augroup vimrc_term
+"   autocmd!
+"   autocmd TermOpen * call s:termopen()
+"   autocmd TermClose *:$SHELL,*:\$SHELL call s:termclose()
+" augroup END
+"
+"
+
+" -- FZF
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_buffers_jump = 1
+
+" Open FZF
+noremap <C-p> :FZF<CR>
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~15%' }
+
+function! Lint()
+  if &filetype =~ 'javascript'
+    Neomake eslint
+  else
+    Neomake
+  end
+endfunction
+
+augroup lint_events
+  autocmd!
+  autocmd BufWritePost * call Lint()
+augroup end
+
+
 "= Because I save dumb file names.
 :autocmd BufWritePre [:;]*
 \   try | echoerr 'Forbidden file name: ' . expand('<afile>') | endtry
+
+map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
