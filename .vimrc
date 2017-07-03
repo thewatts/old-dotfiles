@@ -1,81 +1,79 @@
-"= Initial setup ==================================================================================
+"= Initial setup ===============================================================
 
-  " use Vim settings, rather than Vi settings, required for Vundle
+  " Scheme Config
+  " let g:myTheme = 'base16 - light'
+  let g:myTheme = 'nova'
+
+" use Vim settings, rather than Vi settings filetype off
   set nocompatible
-  filetype off
+  set encoding=utf-8  " Fix special character encoding
 
-  " initialize Vundle and rebuild helptags
-  set rtp+=~/.vim/bundle/Vundle.vim
-  call vundle#begin()
+  call plug#begin()
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+    Plug 'junegunn/fzf.vim'
 
-  Plugin 'gmarik/Vundle.vim'                " let Vundle manage Vundle, required
-  Plugin 'scrooloose/nerdtree'              " file menu
-  Plugin 'ctrlpvim/ctrlp.vim'               " fuzzy file finder
-  Plugin 'scrooloose/syntastic'             " syntax checker
-  Plugin 'godlygeek/tabular'                " for indentation
-  Plugin 'airblade/vim-gitgutter'           " git diff in gutter
-  Plugin 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
-  Plugin 'tpope/vim-commentary'             " easily use comments
-  Plugin 'terryma/vim-multiple-cursors'     " multiple cursors
-  Plugin 'kchmck/vim-coffee-script'         " coffeescript syntax & indent
-  Plugin 'mileszs/ack.vim'                  " searching via :Ack
-  Plugin 'vim-ruby/vim-ruby'                " ruby syntax & indent
-  Plugin 'tpope/vim-markdown'               " markdown syntax & indent
-  Plugin 'pangloss/vim-javascript'          " javascript syntax & indent
-  Plugin 'othree/html5.vim'                 " html5 syntax & indent
-  Plugin 'tpope/vim-haml'                   " haml syntax & indent
-  Plugin 'fatih/vim-go'                     " go syntax / indent / plugins
-  Plugin 'mustache/vim-mustache-handlebars' " mustache/handlebars syntax & indent
-  Plugin 'heartsentwined/vim-emblem'        " emblem syntax & indent
-  Plugin 'thoughtbot/vim-rspec'             " Vim RSPEC runner
-  Plugin 'benmills/vimux'                   " Vim + Tmux Goodness
-  Plugin 'nathanaelkane/vim-indent-guides'  " Indent guides to keep your code aligned
-  Plugin 'groenewege/vim-less'              " Less syntax highlighting / indentation
-  Plugin 'hunner/vim-plist'                 " PLIST Syntax Highlighting / indentation
-  Plugin 'tpope/vim-endwise'                " auto end addition in ruby
-  Plugin 't9md/vim-ruby-xmpfilter'          " inline ruby completion
-  Plugin 'wesQ3/vim-windowswap'             " window swapping
-  Plugin 'bling/vim-airline'                " nice looking footer bar
-  Plugin 'wting/rust.vim'                   " rust syntax & indent
-  Plugin 'godlygeek/csapprox'               " better gvim color support
-  Plugin 'guns/vim-clojure-static'          " clojure syntax highlighting / indentation
-  Plugin 'briancollins/vim-jst'             " JST / EJS syntax
-  Plugin 'vim-perl/vim-perl'                " perl syntax highlighting / indentation
-  Plugin 'chriskempson/base16-vim'          " base 16 colorscheme
-  Plugin 'tfnico/vim-gradle'                " gradle syntax highlighting
-  Plugin 'Valloric/YouCompleteMe'           " auto complete, son
-  Plugin 'toyamarinyon/vim-swift'           " swift syntax highlighting / indent
-  Plugin 'mxw/vim-jsx'                      " vim syntax highlighting / indent for jsx
-  Plugin 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
-  Plugin 'jordwalke/flatlandia'
-  Plugin 'Yggdroot/indentLine'              " Line Indentation Markers
-  Plugin 'elzr/vim-json'                    " JSON jazz
-  Plugin 'slim-template/vim-slim'           " slim syntax highlighting
-  Plugin 'elixir-lang/vim-elixir'           " Elixir
+    Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
+    Plug 'airblade/vim-gitgutter'           " git diff in gutter
+    Plug 'benekastah/neomake'               " syntax checker
+    Plug 'benmills/vimux'                   " Vim + Tmux Goodness
+    Plug 'bling/vim-airline'                " nice looking footer bar
+    Plug 'vim-airline/vim-airline-themes'   " themes for Airline
+    Plug 'chriskempson/base16-vim'          " Base 16 Colors
+    Plug 'christoomey/vim-tmux-navigator'   " easy navigation b/w vim & tmux
+    Plug 'godlygeek/tabular'                " for indentation
+    Plug 'tpope/vim-surround'               " because Will said it's pretty neat
+    Plug 'kana/vim-textobj-user'            " dependency for rubyblock
+    Plug 'mattn/emmet-vim'                  " emmet stuff for vim [http://emmet.io/]
+    Plug 'mileszs/ack.vim'                  " searching via :Ack
+    Plug 'sheerun/vim-polyglot'             " A solid language pack for Vim.
+    Plug 'scrooloose/nerdtree'              " file menu
+    Plug 't9md/vim-ruby-xmpfilter'          " inline ruby completion
+    Plug 'terryma/vim-multiple-cursors'     " multiple cursors
+    Plug 'tpope/vim-commentary'             " easily use comments
+    Plug 'tpope/vim-endwise'                " auto end addition in ruby
+    Plug 'vim-scripts/matchit.zip'          " dependency for rubyblock
+    Plug 'tpope/vim-fugitive'               " Git in Vim
+    Plug 'ryanoasis/vim-devicons'           " Dev Icons
+    Plug 'gavocanov/vim-js-indent'
+    Plug 'thoughtbot/vim-rspec'             " Vim RSpec Runner
+    Plug 'itspriddle/vim-marked'            " Marked
+    Plug 'plasticboy/vim-markdown'
+    Plug 'lumiliet/vim-twig'
+    Plug 'exu/pgsql.vim'
+    Plug 'jparise/vim-graphql'             "graphql syntax
+    Plug 'elixir-lang/vim-elixir'          " elixir
+    Plug 'trevordmiller/nova-vim'
 
-  " end Vundle init (required)
-  call vundle#end()
-  filetype plugin indent on
+    " == JavaScript syntax highlighting ==
+    Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
 
-"= Interface ======================================================================================
+  call plug#end()
 
   "- Appearance -----------------------------------------------------------------------------------
+  "   if (has('termguicolors'))
+  "     set termguicolors
+  "   endif
+  "
+    set term=xterm-256color
+    set termguicolors
 
-    syntax on                    " turn on syntax highilghting
+    syntax on                    " turn on syntax highlighting
 
     filetype plugin on           " enable loading plugins for filetypes
     filetype indent on           " enable loading 'indent files' for filetypes
 
-    set synmaxcol=400            " no syntax highlighting for lines longer than 200 cols
+    set synmaxcol=1000            " no syntax highlighting for lines longer than 400 cols
 
     set laststatus=2             " show status bar
 
     set number                   " display line numbers
+    set relativenumber           " show relative line numbers
     set visualbell               " use visual bell
 
     set laststatus=2             " Fix for statusbar toggling
-    set encoding=utf-8           " Fix special character encoding
-    set t_Co=256                 " MOAR COLORS
 
     set cursorline               " show cursor line
     set ruler                    " cursor position in the lower right corner
@@ -88,7 +86,6 @@
 
     set ttyfast                  " improve screen refresh for terminal vim
     set lazyredraw               " don't redraw while executing macros. async window title update
-    set ttyscroll=3              " something about scrolling buffer size
 
     set scrolloff=3              " start scrolling 3 lines from bottom
     set sidescrolloff=6          " start scrolling 6 lines from right
@@ -98,6 +95,16 @@
     set clipboard=unnamed        " set default yank register to machine clipboard
 
     set nofoldenable             " disable folding
+
+    " disable F1 help, because I keep hitting it when going for ESC
+    nmap <F1> <nop>
+
+    if has('nvim')
+      nmap <BS> <C-W>h
+    endif
+
+    set splitright " vsplit splits to right side
+    set splitbelow " split splits to bottom
 
   "- Wrapping -------------------------------------------------------------------------------------
 
@@ -116,54 +123,123 @@
     set softtabstop=2            " use 2 spaces for a <Tab>
     set expandtab
 
+    let g:indent_guides_color_change_percent = 2
+    let g:indent_guides_enable_on_vim_startup = 1
+
     " for html
     autocmd FileType html setlocal indentkeys-=*<Return>
     autocmd FileType html.handlebars setlocal indentkeys-=*<Return>
     autocmd FileType eruby setlocal indentkeys-=*<Return>
+    autocmd FileType blade.php setlocal indentkeys-=*<Return>
+    au BufRead,BufNewFile *.blade.php* set filetype=html
+
+    " for json
+    au BufNewFile,BufRead .eslintrc set filetype=json
+
+    " for haml
+    au BufNewFile,BufRead *.haml.example set filetype=haml
+
+    " for ruby
+    autocmd FileType conf set filetype=ruby
+    au BufNewFile,BufRead *.rb.example set filetype=ruby
+
+    " git commit
+    autocmd Filetype gitcommit set colorcolumn=50,72
+
+  "- Tab ---------------------------------------------------------------------------------------------
+    function! InsertTabWrapper()
+        let col = col('.') - 1
+        if !col || getline('.')[col - 1] !~ '\k'
+            return "\<tab>"
+        else
+            return "\<c-p>"
+        endif
+    endfunction
+    inoremap <expr> <tab> InsertTabWrapper()
+    inoremap <s-tab> <c-n>
 
   "- Searching ------------------------------------------------------------------------------------
-
     set hlsearch                 " highlight searching
     set ignorecase               " case insensitive search
     set smartcase                " case insensitive search
     set incsearch                " incremental search
 
   "- Theme ----------------------------------------------------------------------------------------
+    let g:indent_guides_auto_colors = 0
 
-    set background=dark      " dark background
-    " set background=light      " dark background
-    " colorscheme smyck      " smyck colorscheme
-    " colorscheme solarized  " solarized colorscheme
-    colorscheme flatlandia   " flatlandia colorscheme
-    " colorscheme ocean   " flatlandia colorscheme
+    let &colorcolumn=join(range(81,101),",")
+    " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
+    highlight Search guifg=#FFFFFF guibg=#FC0D1B
 
-    let &colorcolumn=join(range(81,999),",")
-    highlight ColorColumn ctermbg=235 guibg=#2c2d27
-    highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
 
-"= Utilities ======================================================================================
+    if g:myTheme == 'nova'
+      set background=dark
+      colorscheme nova
+
+      highlight CursorLineNr guifg=#B9E691 gui=bold
+      highlight CursorLine ctermbg=235 guibg=#37474F
+      highlight ColorColumn ctermbg=235 guibg=#38474F
+      highlight SignColumn guifg=#263238 guibg=#263238
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      highlight IndentGuidesOdd  guibg=#3D4C55
+      highlight IndentGuidesEven guibg=#43525B
+
+    elseif g:myTheme == 'base16 - light'
+      set background=light
+      colorscheme base16-grayscale-light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      highlight ColorColumn ctermbg=235 guibg=#EDEDED
+      let g:airline_theme='base16_grayscale'
+      highlight Comment guifg=#415D84
+    endif
+
+    " For Italics
+    highlight Comment gui=italic
+    highlight Comment cterm=italic
+    highlight htmlArg gui=italic
+    highlight htmlArg cterm=italic
+    highlight jsxChild gui=italic
+    highlight jsxChild cterm=italic
+    highlight xmlAttrib gui=italic guifg=#60ff60
+    highlight jsObjectKey guifg=#60ff60
+    highlight jsonKeyword guifg=#FFFD6D
+
+"= Utilities ===================================================================
 
   set noswapfile                     " don't create swap files
   set autowrite                      " write the old file out when switching between files
   autocmd BufWritePre * :%s/\s\+$//e " auto strip whitespace on save
 
-"= Keys ===========================================================================================
+"= Keys ========================================================================
 
   let mapleader = ','                       " set <Leader>
   set backspace=indent,eol,start            " make backspace behave as expected
 
   " easy splits and switches over (\v)
-  nnoremap <leader>v <C-w>v<C-w><C-w>
+  nnoremap <leader>v <C-w>v
   nnoremap <leader>h <C-w>s<C-w><C-w>
+  nnoremap <leader>q :vsplit<cr> :term<cr>
 
   " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
   imap jj <esc>
 
-  " easier window navigation
-  nmap <C-h> <C-w>h
-  nmap <C-j> <C-w>j
-  nmap <C-k> <C-w>k
-  nmap <C-l> <C-w>l
+  " search navigation
+  nnoremap <Space>] :cn<cr>
+  nnoremap <Space>[ :cp<cr>
+
+  let g:tmux_navigator_no_mappings = 1
+  nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+  nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+  nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+  nnoremap <silent> <C-h> :TmuxNavigateLeft<CR>
+  nnoremap <silent> <C-;> :TmuxNavigatePrevious<cr>
 
   " kill the trailing whitespace
   nnoremap <leader>rtw :%s/\s\+$//e<CR>
@@ -184,119 +260,133 @@
   " quick insert hashrocket
   imap <c-l> <space>=><space>
 
-"= Plugin Settings=================================================================================
-
-  "- Syntastic ------------------------------------------------------------------------------------
-  let g:syntastic_mode_map={ 'mode': 'active',
-                     \ 'active_filetypes': [],
-                     \ 'passive_filetypes': ['html'] } " disable checking for html
-
-  let g:syntastic_javascript_checkers = ['eslint']
-
-  "- Markdown ------------------------------------------------------------------------------------
-  let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
-
-  "- NerdTree -------------------------------------------------------------------------------------
-  " toggle NerdTree (ControlK + ControlB)
-  nnoremap <C-k><C-b> :NERDTreeToggle<CR>
-  let NERDTreeShowHidden=1    " show hidden files
-  let NERDTreeQuitOnOpen = 1  " Hide NERDTree when opening a file
-
-  "- Tabularize  ----------------------------------------------------------------------------------
-  vmap <Leader>= :Tabularize /=<CR>
-  vmap <Leader>{ :Tabularize /{<CR>
-
-  "- Control-P ------------------------------------------------------------------------------------
-  " Don't use caching
-  let g:ctrlp_use_caching = 0
-  let g:ctrlp_working_path_mode = ''
-
-  "- JSX ------------------------------------------------------------------------------------
-  let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+  " insert a binding.pry under cursor
+  map <Leader>d orequire 'pry'<cr>binding.pry<esc>:w<cr>
+  map <Leader>g odebugger;<esc>:w<cr>
+  map <Leader>bb :term bundle install<cr>
 
   " Custom ignore paths
-  set wildignore+=*/tmp/*,*/bin/*,*/bower_components/*,*.so,*.swp,*.zip     " MacOSX/Linux
-  let g:ctrlp_custom_ignore = {
-    \ 'dir':  'node_modules',
-    \ }
+  set wildignore+=*/tmp/*,*/bin/*,*/.git/*,*/node_modules/*,*/bower_components/*,*.so,*.swp,*.zip,*.gitkeep     " MacOSX/Linux
 
-  "- Ack ------------------------------------------------------------------------------------------
-  let g:ackprg = 'ag --nogroup --nocolor --column'
+"= Markdown=====================================================================
+  let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass']
+  let g:vim_markdown_conceal = 0
+  let g:vim_markdown_folding_disabled=1
+  au BufRead,BufNewFile *.txt set filetype=markdown
 
-  "- Rspec.vim  -----------------------------------------------------------------------------------
-  " let g:rspec_command = '!bundle exec bin/rspec {spec}'  " use spring w/ rspec runner
-  let g:rspec_command = '!bundle exec rspec {spec}'      " dont use spring w/ rspec runner
-  let g:rspec_runner = 'os_x_iterm'
-  map <Leader>t :call RunCurrentSpecFile()<CR>
-  map <Leader>s :call RunNearestSpec()<CR>
-  map <Leader>l :call RunLastSpec()<CR>
-  map <Leader>a :call RunAllSpecs()<CR>
 
-  "- XMPFilter  ------------------------------------------------------------------------------------
-  map <C-b> <Plug>(xmpfilter-mark)<Plug>(xmpfilter-run)
+"= NerdTree ====================================================================
+" toggle NerdTree (Control + b)
+nnoremap <C-b> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1  " show hidden files
+let NERDTreeQuitOnOpen=1  " Hide NERDTree when opening a file
 
-  "- Indent Guides ---------------------------------------------------------------------------------
-  " let g:indent_guides_color_change_percent = 3      " ultra-low-contrast guides
-  " let g:indent_guides_guide_size = 2                " between 0 and 'shiftwidth'
-  " let g:indent_guides_start_level = 1               " don't show guides until the third indent
-  let g:indentLine_enabled = 1
-  let g:indentLine_char = '¦'
-  let g:indentLine_color_term = 239
-  let g:indentLine_noConcealCursor = 1
-  " let g:indentLine_faster = 1
+"= FZF =========================================================================
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_buffers_jump = 1
 
-  "= Airline ========================================================================================
-  let g:airline_powerline_fonts = 1
+" Open FZF
+noremap <C-p> :FZF<CR>
 
-  "= Goyo & Limelight ===============================================================================
-  autocmd User GoyoEnter Limelight
-  autocmd User GoyoLeave Limelight!
-  let g:goyo_width = 120
-  nnoremap <Leader>G :Goyo<CR>
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~15%' }
 
-"= Language Specific Settings======================================================================
+"= Ack =========================================================================
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
-  "- Golang ---------------------------------------------------------------------------------------
+"= RSpec.vim ===================================================================
+let g:rspec_command = '!bin/rspec {spec}'
+let g:rspec_runner = 'os_x_iterm2'
+
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+"= Indent Guides ===============================================================
+let g:indent_guides_auto_colors = 0
+
+"= Airline =====================================================================
+let g:airline_powerline_fonts = 1
+
+"= Emmet =======================================================================
+imap kk <C-y>,<ESC>
+" imap ll <C-y>j<ESC>
+nmap <C-i><C-i> i<C-y>j<ESC>
+
+"= Language Specific Settings===================================================
+
+  "- Golang --------------------------------------------------------------------
   let g:go_fmt_command = 'goimports'     " use gofmt on save w/ go commands (from go plugin)
 
   function! ExecuteGoCode()              " for running Golang on enter
     exec ":!clear && go run " . @%
   endfunction
 
-  "- C ---------------------------------------------------------------------------------------
+  "- Elixir --------------------------------------------------------------------
+  function! ExecuteElixirCode()              " for running Elixir on enter
+    exec ":split | term elixir " . @%
+  endfunction
+
+  "- C -------------------------------------------------------------------------
   function! ExecuteCCode()
     exec ':Shell gcc ' . @% . ' -o file && ./file'
   endfunction
 
-  "- Rust-------------------------------------------------------------------------------------
+  "- Rust-----------------------------------------------------------------------
   function! ExecuteRustCode()
     exec ':Shell rustc ' . @% . ' -o file && ./file'
   endfunction
 
-  "- ES6---------------------------------------------------------------------------------------
+  "- ES6------------------------------------------------------------------------
   autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
   "- JavaScript
   autocmd FileType javascript inoremap {<CR> {<CR>}<Esc><S-o>
   autocmd FileType javascript inoremap (; ();<Esc>hi
 
-  "- J Builder ------------------------------------------------------------------------------------
+  "- J Builder -----------------------------------------------------------------
   au BufNewFile,BufRead *.json.jbuilder set ft=ruby       " set syntax to ruby for jBuilder files
 
-  "- Fdoc ------------------------------------------------------------------------------------
+  "- Fdoc ----------------------------------------------------------------------
   au BufNewFile,BufRead *.fdoc set ft=yaml         " set syntax to ruby for jBuilder files
 
-  "- HBARS ------------------------------------------------------------------------------------
+  "- HBARS ---------------------------------------------------------------------
   au BufNewFile,BufRead *.hbars set ft=haml       " set syntax to haml, even tho it's not ruby, for hbars files
 
-"= Enter Key ======================================================================================
+  "- Mustache  -----------------------------------------------------------------
+  au BufNewFile,BufRead *.html.mustache set ft=mustache
 
+  "- Mustache  -----------------------------------------------------------------
+  au BufNewFile,BufRead *.hbs set ft=mustache
+
+  "- Elm
+  au BufNewFile,BufRead *.elm set ft=elm
+
+"= Enter Key ===================================================================
   function! MapCR()
     if (&ft=='c')
       :call ExecuteCCode()
     endif
     if (&ft=='go')
       :call ExecuteGoCode()
+    endif
+    if (&ft=='elixir')
+      :call ExecuteElixirCode()
     endif
     if (&ft=='ruby')
       :call RunLastSpec()
@@ -314,19 +404,12 @@
 
   :nnoremap <cr> :call MapCR()<cr>
 
-"= For running commands in a new window ========================================================
-function! s:ExecuteInShell(command)
-  let command = join(map(split(a:command), 'expand(v:val)'))
-  let winnr = bufwinnr('^' . command . '$')
-  silent! execute  winnr < 0 ? 'botright new ' . fnameescape(command) : winnr . 'wincmd w'
-  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap number
-  echo 'Execute ' . command . '...'
-  silent! execute 'silent %!'. command
-  silent! execute 'resize ' . line('$')
-  silent! redraw
-  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
-  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
-  echo 'Shell command ' . command . ' executed.'
-  wincmd k
+"= Pretty JSON =================================================================
+" Requires 'jq' (brew install jq)
+function! s:PrettyJSON()
+  %!jq .
+  set filetype=json
 endfunction
-command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
+command! PrettyJSON :call <sid>PrettyJSON()
+
+map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
