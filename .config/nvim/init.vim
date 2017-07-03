@@ -1,12 +1,6 @@
 "= Initial setup ==================================================================================
   " Scheme Config
-  " let g:myTheme = 'material'
-  " let g:myTheme = 'base16-oceanicnext'
-  " let g:myTheme = 'onedark'
-  " let g:myTheme = 'gotham'
-  " let g:myTheme = 'solarized - light'
   let g:myTheme = 'base16 - light'
-  let g:myTheme  = 'flatlandia'
 
   " use Vim settings, rather than Vi settings
   filetype off
@@ -15,7 +9,6 @@
 
   call plug#begin()
 
-    " Plug 'Yggdroot/indentLine'              ' Line Indentation Markers
     Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
     Plug 'airblade/vim-gitgutter'           " git diff in gutter
     Plug 'benekastah/neomake'               " syntax checker
@@ -74,6 +67,11 @@
 
     " == JavaScript syntax highlighting ==
     Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
+=======
+
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+>>>>>>> Update NeoVim Config
     Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
     Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
@@ -81,7 +79,6 @@
   call plug#end()
 
   let g:python3_host_prog = '/usr/local/bin/python3'
-
 
 "= Interface ======================================================================================
 
@@ -168,11 +165,6 @@
     " for json
     au BufNewFile,BufRead .eslintrc set filetype=json
 
-    " for php
-    " autocmd FileType php set tabstop=4
-    " autocmd FileType php set softtabstop=4
-    " autocmd FileType php set shiftwidth=4
-
     " for haml
     " autocmd Filetype * if &ft!="haml"|IndentGuidesDisable|endif
     " autocmd Filetype * if &ft!="haml"|let g:indentLine_enabled = 1|endif
@@ -184,6 +176,10 @@
     " for ruby
     autocmd FileType conf set filetype=ruby
     au BufNewFile,BufRead *.rb.example set filetype=ruby
+    autocmd FileType haml let g:indentLine_enabled = 0
+
+    " for ruby
+    autocmd FileType conf set filetype=ruby
 
     " git commit
     autocmd Filetype gitcommit set colorcolumn=50,72
@@ -241,6 +237,100 @@
       highlight ColorColumn ctermbg=235 guibg=#EDEDED
       let g:indentLine_color_gui = '#EEE8D7'
       let g:airline_theme='base16_grayscale'
+
+    elseif g:myTheme == 'base16-ocean-dark'
+      colorscheme base16-ocean
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#343D46
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='base16'
+
+    elseif g:myTheme == 'base16-oceanicnext'
+      " colorscheme base16-oceanicnext
+      colorscheme OceanicNext
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='base16'
+      let g:gitgutter_override_sign_column_highlight = 1
+      let g:airline_theme='oceanicnext'
+
+    elseif g:myTheme == 'gotham'
+      colorscheme gotham
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='gotham'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'deep-space'
+      colorscheme deep-space
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='deep_space'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'lucario'
+      colorscheme lucario
+      set background=dark
+      highlight CursorLineNr guifg=#EBCB8B
+      highlight LineNr guibg=#17272F
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#17272F
+      highlight SignColumn guifg=#17272F guibg=#17272F
+      highlight GitGutterAdd guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChange guifg=#DBA94E guibg=#17272F
+      highlight GitGutterChangeDelete guifg=#DBA94E guibg=#17272F
+      highlight GitGutterDelete guifg=#DBA94E guibg=#17272F
+
+      " Git Gutter
+      let g:indentLine_color_gui = '#343D46'
+      let g:airline_theme='solarized'
+      let g:gitgutter_override_sign_column_highlight = 1
+
+    elseif g:myTheme == 'gruvbox'
+      let g:gruvbox_italic=1
+      let g:gruvbox_contrast_light="hard"
+      colorscheme gruvbox
+      set background=light
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      let g:indentLine_color_gui = '#EEE8D7'
+      let g:airline_theme='solarized'
 
     elseif g:myTheme == 'base16-ocean-dark'
       colorscheme base16-ocean
@@ -405,8 +495,6 @@
     " highlight xmlString gui=italic
     " highlight xmlString cterm=italic
 
-
-
 "= Utilities ======================================================================================
 
   set noswapfile                     " don't create swap files
@@ -553,6 +641,10 @@
   " Ignore specific files and folders
   let g:ctrlp_custom_ignore = {
     \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log)|ios/build)',
+
+  " Ignore specific files and folders
+  let g:ctrlp_custom_ignore = {
+    \ 'dir': '(log|node_modules/\.*/|vendor/bundle|tmp|components/\.*/(vendor/bundle|tmp|spec/dummy|log))',
     \ 'file': '\v\.(jpg|png|gif|db)'
     \ }
 
@@ -574,6 +666,8 @@
   let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
   " let g:rspec_command = 'tabnew | term bundle exec bin/rspec {spec}'
   "
+  " let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
+  let g:rspec_command = 'vsplit | term bundle exec bin/rspec {spec}'
   let g:rspec_runner = 'os_x_iterm2'
   map <Leader>t :call RunCurrentSpecFile()<CR>
   map <Leader>s :call RunNearestSpec()<CR>
@@ -593,6 +687,8 @@
   let g:indentLine_char = '¦'
   let g:indentLine_noConcealCursor = 1
   let g:indentLine_faster = 1
+
+  autocmd FileType haml,scss :IndentLinesDisable
 
   "= Airline ========================================================================================
   let g:airline_powerline_fonts = 1
@@ -748,67 +844,6 @@ function! s:PrettyJSON()
   set filetype=json
 endfunction
 command! PrettyJSON :call <sid>PrettyJSON()
-
-" Prevent the terminal from taking the window with it when it closes.
-"
-" The last two screens worth of text is stored in register `t`
-" function! s:termclose() abort
-"   let first = max([1, line('w0') - winheight(0)])
-"   call setreg('t', getline(first, line('$')), 'V')
-"   let buf = expand('#')
-"   if !empty(buf) && buflisted(buf) && bufnr(buf) != bufnr('%')
-"     execute 'autocmd BufWinLeave <buffer> split' buf
-"     execute 'doautocmd FileType' getbufvar(buf, '&filetype')
-"   endif
-
-"   execute ':edit'
-" endfunction
-
-" function! s:tmuxnav(dir) abort
-"   let b:_tmuxnav = 1
-"   let buf = bufnr('%')
-"   execute 'TmuxNavigate'.a:dir
-
-"   if bufnr('%') == buf
-"     " Buffer didn't actually change.
-"     startinsert
-"   endif
-" endfunction
-
-" function! s:termopen() abort
-"   setlocal nospell
-"   tnoremap <silent><buffer> <m-h> <c-\><c-n>:<c-u>call <sid>tmuxnav('Left')<cr>
-"   tnoremap <silent><buffer> <m-j> <c-\><c-n>:<c-u>call <sid>tmuxnav('Down')<cr>
-"   tnoremap <silent><buffer> <m-k> <c-\><c-n>:<c-u>call <sid>tmuxnav('Up')<cr>
-"   tnoremap <silent><buffer> <m-l> <c-\><c-n>:<c-u>call <sid>tmuxnav('Right')<cr>
-
-"   autocmd BufEnter <buffer>
-"         \ if exists('b:_tmuxnav') |
-"         \   unlet! b:_tmuxnav |
-"         \   startinsert |
-"         \ endif
-" endfunction
-
-" augroup vimrc_term
-"   autocmd!
-"   autocmd TermOpen * call s:termopen()
-"   autocmd TermClose *:$SHELL,*:\$SHELL call s:termclose()
-" augroup END
-"
-
-function! Lint()
-  if &filetype =~ 'javascript'
-    Neomake eslint
-  else
-    Neomake
-  end
-endfunction
-
-augroup lint_events
-  autocmd!
-  autocmd BufWritePost * call Lint()
-augroup end
-
 
 "= Because I save dumb file names.
 :autocmd BufWritePre [:;]*
