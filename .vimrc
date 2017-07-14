@@ -161,7 +161,7 @@
   "- Theme ----------------------------------------------------------------------------------------
     let g:indent_guides_auto_colors = 0
 
-    let &colorcolumn=join(range(81, 81),",")
+    set colorcolumn=80,100
     " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
     highlight Search guifg=#FFFFFF guibg=#FC0D1B
 
