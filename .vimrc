@@ -198,18 +198,32 @@
       highlight ColorColumn ctermbg=235 guibg=#EDEDED
       let g:airline_theme='base16_grayscale'
       highlight Comment guifg=#415D84
+
+    elseif g:myTheme == 'base16 - ocean'
+      set background=dark
+      colorscheme base16-ocean
+      highlight CursorLineNr guifg=#EACA89 gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#343d46
+      let g:airline_theme='base16_ocean'
     endif
 
-    " For Italics
-    highlight Comment gui=italic
-    highlight Comment cterm=italic
-    highlight htmlArg gui=italic
-    highlight htmlArg cterm=italic
-    highlight jsxChild gui=italic
-    highlight jsxChild cterm=italic
-    highlight xmlAttrib gui=italic guifg=#60ff60
-    highlight jsObjectKey guifg=#60ff60
-    highlight jsonKeyword guifg=#FFFD6D
+"= Italics =====================================================================
+  " From https://www.reddit.com/r/vim/comments/24g8r8/italics_in_terminal_vim_and_tmux/
+  " Step #4
+  set t_ZH=[3m
+  set t_ZR=[23m
+
+  highlight Comment gui=italic
+  highlight Comment cterm=italic
+  highlight htmlArg gui=italic
+  highlight htmlArg cterm=italic
+  highlight jsxChild gui=italic
+  highlight jsxChild cterm=italic
+  highlight xmlAttrib gui=italic " guifg=#60ff60
+  highlight xmlAttrib cterm=italic
+  highlight jsObjectKey guifg=#60ff60
+  highlight jsonKeyword guifg=#FFFD6D
 
 "= Utilities ===================================================================
 
