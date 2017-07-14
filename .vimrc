@@ -2,7 +2,8 @@
 
   " Scheme Config
   " let g:myTheme = 'base16 - light'
-  let g:myTheme = 'nova'
+  " let g:myTheme = 'nova'
+  let g:myTheme = 'base16 - ocean'
 
 " use Vim settings, rather than Vi settings filetype off
   set nocompatible
@@ -12,9 +13,8 @@
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
     Plug 'junegunn/fzf.vim'
 
-    Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
+    Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'           " git diff in gutter
-    Plug 'benekastah/neomake'               " syntax checker
     Plug 'benmills/vimux'                   " Vim + Tmux Goodness
     Plug 'bling/vim-airline'                " nice looking footer bar
     Plug 'vim-airline/vim-airline-themes'   " themes for Airline
@@ -43,20 +43,14 @@
     Plug 'jparise/vim-graphql'             "graphql syntax
     Plug 'elixir-lang/vim-elixir'          " elixir
     Plug 'trevordmiller/nova-vim'
+    Plug 'w0rp/ale'                        " code linting
 
     " == JavaScript syntax highlighting ==
-    Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
-    Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
-    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
-    Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
-
+    Plug 'pangloss/vim-javascript'
+    Plug 'mxw/vim-jsx'
   call plug#end()
 
   "- Appearance -----------------------------------------------------------------------------------
-  "   if (has('termguicolors'))
-  "     set termguicolors
-  "   endif
-  "
     set term=xterm-256color
     set termguicolors
 
@@ -167,10 +161,9 @@
   "- Theme ----------------------------------------------------------------------------------------
     let g:indent_guides_auto_colors = 0
 
-    let &colorcolumn=join(range(81,101),",")
+    set colorcolumn=80,100
     " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
     highlight Search guifg=#FFFFFF guibg=#FC0D1B
-
 
     if g:myTheme == 'nova'
       set background=dark
@@ -186,9 +179,6 @@
       highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
       highlight GitGutterDelete guifg=#C4E78D guibg=#263238
 
-      highlight IndentGuidesOdd  guibg=#3D4C55
-      highlight IndentGuidesEven guibg=#43525B
-
     elseif g:myTheme == 'base16 - light'
       set background=light
       colorscheme base16-grayscale-light
@@ -198,18 +188,34 @@
       highlight ColorColumn ctermbg=235 guibg=#EDEDED
       let g:airline_theme='base16_grayscale'
       highlight Comment guifg=#415D84
+
+    elseif g:myTheme == 'base16 - ocean'
+      set background=dark
+      colorscheme base16-ocean
+      highlight CursorLineNr guifg=#EACA89 gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#343d46
+      highlight ColorColumn guibg=#343D46
+      highlight LineNr ctermbg=235 guibg=#2A2F3A
+      let g:airline_theme='base16_ocean'
     endif
 
-    " For Italics
-    highlight Comment gui=italic
-    highlight Comment cterm=italic
-    highlight htmlArg gui=italic
-    highlight htmlArg cterm=italic
-    highlight jsxChild gui=italic
-    highlight jsxChild cterm=italic
-    highlight xmlAttrib gui=italic guifg=#60ff60
-    highlight jsObjectKey guifg=#60ff60
-    highlight jsonKeyword guifg=#FFFD6D
+"= Italics =====================================================================
+  " From https://www.reddit.com/r/vim/comments/24g8r8/italics_in_terminal_vim_and_tmux/
+  " Step #4
+  set t_ZH=[3m
+  set t_ZR=[23m
+
+  highlight Comment gui=italic
+  highlight Comment cterm=italic
+  highlight htmlArg gui=italic
+  highlight htmlArg cterm=italic
+  highlight jsxChild gui=italic
+  highlight jsxChild cterm=italic
+  highlight xmlAttrib gui=italic " guifg=#60ff60
+  highlight xmlAttrib cterm=italic
+  highlight jsObjectKey guifg=#60ff60
+  highlight jsonKeyword guifg=#FFFD6D
 
 "= Utilities ===================================================================
 
@@ -274,7 +280,6 @@
   let g:vim_markdown_folding_disabled=1
   au BufRead,BufNewFile *.txt set filetype=markdown
 
-
 "= NerdTree ====================================================================
 " toggle NerdTree (Control + b)
 nnoremap <C-b> :NERDTreeToggle<CR>
@@ -309,16 +314,13 @@ let g:fzf_layout = { 'down': '~15%' }
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 "= RSpec.vim ===================================================================
-let g:rspec_command = '!bin/rspec {spec}'
+let g:rspec_command = '!clear && bin/rspec {spec}'
 let g:rspec_runner = 'os_x_iterm2'
 
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
-
-"= Indent Guides ===============================================================
-let g:indent_guides_auto_colors = 0
 
 "= Airline =====================================================================
 let g:airline_powerline_fonts = 1
@@ -412,4 +414,6 @@ function! s:PrettyJSON()
 endfunction
 command! PrettyJSON :call <sid>PrettyJSON()
 
+"= Press F3 while the cursor is over an attribute - it'll list out the
+" attribute name and the color for highlight adjustments
 map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
