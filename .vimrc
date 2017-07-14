@@ -4,7 +4,6 @@
   " let g:myTheme = 'base16 - light'
   " let g:myTheme = 'nova'
   let g:myTheme = 'base16 - ocean'
-  " let g:myTheme = 'solarized'
 
 " use Vim settings, rather than Vi settings filetype off
   set nocompatible
@@ -14,7 +13,7 @@
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
     Plug 'junegunn/fzf.vim'
 
-    Plug 'nathanaelkane/vim-indent-guides'  " line indentation - for use with HAML
+    Plug 'Yggdroot/indentLine'
     Plug 'airblade/vim-gitgutter'           " git diff in gutter
     Plug 'benmills/vimux'                   " Vim + Tmux Goodness
     Plug 'bling/vim-airline'                " nice looking footer bar
@@ -162,10 +161,9 @@
   "- Theme ----------------------------------------------------------------------------------------
     let g:indent_guides_auto_colors = 0
 
-    let &colorcolumn=join(range(81,101),",")
+    let &colorcolumn=join(range(81, 81),",")
     " highlight SignColumn ctermbg=NONE guibg=NONE gui=NONE
     highlight Search guifg=#FFFFFF guibg=#FC0D1B
-
 
     if g:myTheme == 'nova'
       set background=dark
@@ -180,9 +178,6 @@
       highlight GitGutterChange guifg=#C4E78D guibg=#263238
       highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
       highlight GitGutterDelete guifg=#C4E78D guibg=#263238
-
-      highlight IndentGuidesOdd  guibg=#3D4C55
-      highlight IndentGuidesEven guibg=#43525B
 
     elseif g:myTheme == 'base16 - light'
       set background=light
@@ -200,6 +195,8 @@
       highlight CursorLineNr guifg=#EACA89 gui=bold
       highlight Search guifg=#FFFFFF guibg=#FC0D1B
       highlight ColorColumn ctermbg=235 guibg=#343d46
+      highlight ColorColumn guibg=#343D46
+      highlight LineNr ctermbg=235 guibg=#2A2F3A
       let g:airline_theme='base16_ocean'
     endif
 
@@ -324,9 +321,6 @@ map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
-
-"= Indent Guides ===============================================================
-let g:indent_guides_auto_colors = 0
 
 "= Airline =====================================================================
 let g:airline_powerline_fonts = 1
