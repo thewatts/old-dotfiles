@@ -197,6 +197,7 @@
       highlight ColorColumn ctermbg=235 guibg=#343d46
       highlight ColorColumn guibg=#343D46
       highlight LineNr ctermbg=235 guibg=#2A2F3A
+      highlight VertSplit ctermbg=235 guibg=#2B303B
       let g:airline_theme='base16_ocean'
     endif
 
