@@ -2,6 +2,7 @@
 
   " Scheme Config
   " let g:myTheme = 'base16 - light'
+  let g:myTheme = 'base16 - cupcake'
   " let g:myTheme = 'nova'
   let g:myTheme = 'base16 - ocean'
 
@@ -187,6 +188,16 @@
       highlight ColorColumn ctermbg=235 guibg=#EEE8D6
       highlight ColorColumn ctermbg=235 guibg=#EDEDED
       let g:airline_theme='base16_grayscale'
+      highlight Comment guifg=#415D84
+
+    elseif g:myTheme == 'base16 - cupcake'
+      set background=light
+      colorscheme base16-cupcake
+      highlight CursorLineNr guifg=#2E8CCF gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn ctermbg=235 guibg=#EEE8D6
+      highlight ColorColumn ctermbg=235 guibg=#EDEDED
+      let g:airline_theme='base16_default'
       highlight Comment guifg=#415D84
 
     elseif g:myTheme == 'base16 - ocean'
