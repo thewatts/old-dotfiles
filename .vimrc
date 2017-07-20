@@ -342,6 +342,10 @@ imap kk <C-y>,<ESC>
 " imap ll <C-y>j<ESC>
 nmap <C-i><C-i> i<C-y>j<ESC>
 
+"= Ale =======================================================================
+" only lint when file is saved
+let g:ale_lint_on_text_changed = 'never'
+
 "= Language Specific Settings===================================================
 
   "- Golang --------------------------------------------------------------------
