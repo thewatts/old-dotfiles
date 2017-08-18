@@ -202,6 +202,9 @@
       let g:airline_theme='base16_default'
       highlight Comment guifg=#415D84
 
+      highlight hamlClass guifg=#dcb16c
+      highlight hamlId guifg=#d57e85
+
     elseif g:myTheme == 'base16 - ocean'
       set background=dark
       colorscheme base16-ocean
@@ -212,6 +215,9 @@
       highlight LineNr ctermbg=235 guibg=#2A2F3A
       highlight VertSplit ctermbg=235 guibg=#2B303B
       let g:airline_theme='base16_ocean'
+
+      highlight hamlClass guifg=#ebcb8b
+      highlight hamlId guifg=#bf616a
     endif
 
 "= Italics =====================================================================
@@ -224,6 +230,10 @@
   highlight Comment cterm=italic
   highlight htmlArg gui=italic
   highlight htmlArg cterm=italic
+  highlight hamlClass gui=italic
+  highlight hamlClass cterm=italic
+  highlight hamlId gui=italic
+  highlight hamlId cterm=italic
   highlight jsxChild gui=italic
   highlight jsxChild cterm=italic
   highlight xmlAttrib gui=italic " guifg=#60ff60
