@@ -2,9 +2,9 @@
 
   " Scheme Config
   " let g:myTheme = 'base16 - light'
-  let g:myTheme = 'base16 - cupcake'
-  " let g:myTheme = 'nova'
+  " let g:myTheme = 'base16 - cupcake'
   let g:myTheme = 'base16 - ocean'
+  " let g:myTheme = 'nova'
 
 " use Vim settings, rather than Vi settings filetype off
   set nocompatible
@@ -44,7 +44,9 @@
     Plug 'jparise/vim-graphql'             "graphql syntax
     Plug 'elixir-lang/vim-elixir'          " elixir
     Plug 'trevordmiller/nova-vim'
-    Plug 'w0rp/ale'                        " code linting
+    " Plug 'w0rp/ale'                        " code linting
+    Plug 'benekastah/neomake'
+    " Plug 'vim-syntastic/syntastic'
 
     " == JavaScript syntax highlighting ==
     Plug 'pangloss/vim-javascript'
@@ -344,7 +346,9 @@ nmap <C-i><C-i> i<C-y>j<ESC>
 
 "= Ale =======================================================================
 " only lint when file is saved
-let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_text_changed = 'never'
+" let g:syntastic_haml_checkers = ['haml_lint']
+autocmd! BufWritePost * Neomake
 
 "= Language Specific Settings===================================================
 
