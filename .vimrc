@@ -4,6 +4,8 @@
   " let g:myTheme = 'base16 - light'
   " let g:myTheme = 'base16 - cupcake'
   let g:myTheme = 'base16 - ocean'
+  " let g:myTheme = 'gruvbox'
+  " let g:myTheme = 'gruvbox - light'
   " let g:myTheme = 'nova'
 
 " use Vim settings, rather than Vi settings filetype off
@@ -32,6 +34,7 @@
     Plug 'terryma/vim-multiple-cursors'     " multiple cursors
     Plug 'tpope/vim-commentary'             " easily use comments
     Plug 'tpope/vim-endwise'                " auto end addition in ruby
+    Plug 'tpope/vim-unimpaired'             " pairs of handy bracket mappings
     Plug 'vim-scripts/matchit.zip'          " dependency for rubyblock
     Plug 'tpope/vim-fugitive'               " Git in Vim
     Plug 'ryanoasis/vim-devicons'           " Dev Icons
@@ -44,6 +47,7 @@
     Plug 'jparise/vim-graphql'             "graphql syntax
     Plug 'elixir-lang/vim-elixir'          " elixir
     Plug 'trevordmiller/nova-vim'
+    Plug 'joker1007/vim-ruby-heredoc-syntax'
     " Plug 'w0rp/ale'                        " code linting
     Plug 'benekastah/neomake'
     " Plug 'vim-syntastic/syntastic'
@@ -51,6 +55,8 @@
     " == JavaScript syntax highlighting ==
     Plug 'pangloss/vim-javascript'
     Plug 'mxw/vim-jsx'
+
+    Plug 'morhetz/gruvbox'
   call plug#end()
 
   "- Appearance -----------------------------------------------------------------------------------
@@ -103,6 +109,10 @@
     set splitright " vsplit splits to right side
     set splitbelow " split splits to bottom
 
+    set synmaxcol=128
+    syntax sync minlines=256
+    " set nocul
+
   "- Wrapping -------------------------------------------------------------------------------------
 
     set nowrap                   " don't softwrap text
@@ -132,6 +142,7 @@
 
     " for json
     au BufNewFile,BufRead .eslintrc set filetype=json
+    au BufNewFile,BufRead .babelrc set filetype=json
 
     " for haml
     au BufNewFile,BufRead *.haml.example set filetype=haml
@@ -139,9 +150,13 @@
     " for ruby
     autocmd FileType conf set filetype=ruby
     au BufNewFile,BufRead *.rb.example set filetype=ruby
+    let g:ruby_path = system('echo $HOME/.rbenv/shims')
 
     " git commit
     autocmd Filetype gitcommit set colorcolumn=50,72
+
+    " env files
+    au BufNewFile,BufRead *.development set filetype=sh
 
   "- Tab ---------------------------------------------------------------------------------------------
     function! InsertTabWrapper()
@@ -210,14 +225,28 @@
       colorscheme base16-ocean
       highlight CursorLineNr guifg=#EACA89 gui=bold
       highlight Search guifg=#FFFFFF guibg=#FC0D1B
-      highlight ColorColumn ctermbg=235 guibg=#343d46
       highlight ColorColumn guibg=#343D46
-      highlight LineNr ctermbg=235 guibg=#2A2F3A
+      highlight LineNr ctermbg=235 guibg=#2c303a
       highlight VertSplit ctermbg=235 guibg=#2B303B
-      let g:airline_theme='base16_ocean'
 
       highlight hamlClass guifg=#ebcb8b
       highlight hamlId guifg=#bf616a
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      let g:airline_theme='base16_ocean'
+    elseif g:myTheme == 'gruvbox'
+      set background=dark
+      colorscheme gruvbox
+      let g:gruvbox_contrast_dark="hard"
+      highlight xmlAttrib guifg=#60ff60
+    elseif g:myTheme == 'gruvbox - light'
+      set background=light
+      colorscheme gruvbox
+      let g:gruvbox_contrast_light="hard"
     endif
 
 "= Italics =====================================================================
@@ -236,7 +265,7 @@
   highlight hamlId cterm=italic
   highlight jsxChild gui=italic
   highlight jsxChild cterm=italic
-  highlight xmlAttrib gui=italic " guifg=#60ff60
+  highlight xmlAttrib gui=italic
   highlight xmlAttrib cterm=italic
   highlight jsObjectKey guifg=#60ff60
   highlight jsonKeyword guifg=#FFFD6D
@@ -291,7 +320,7 @@
   imap <c-l> <space>=><space>
 
   " insert a binding.pry under cursor
-  map <Leader>d orequire 'pry'<cr>binding.pry<esc>:w<cr>
+  map <Leader>d orequire "pry"<cr>binding.pry<esc>:w<cr>
   map <Leader>g odebugger;<esc>:w<cr>
   map <Leader>bb :term bundle install<cr>
 
@@ -447,3 +476,41 @@ command! PrettyJSON :call <sid>PrettyJSON()
 "= Press F3 while the cursor is over an attribute - it'll list out the
 " attribute name and the color for highlight adjustments
 map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
+" Committing
+" =========
+"
+" BufRead seems more appropriate here but for some reason the final `wincmd p` doesn't work if we do that.
+autocmd VimEnter COMMIT_EDITMSG call OpenCommitMessageDiff()
+function OpenCommitMessageDiff()
+  " Save the contents of the z register
+  let old_z = getreg("z")
+  let old_z_type = getregtype("z")
+
+  try
+    call cursor(1, 0)
+    let diff_start = search("^diff --git")
+    if diff_start == 0
+      " There's no diff in the commit message; generate our own.
+      let @z = system("git diff --cached -M -C")
+    else
+      " Yank diff from the bottom of the commit message into the z register
+      :.,$yank z
+      call cursor(1, 0)
+    endif
+
+    " Paste into a new buffer
+    vnew
+    normal! V"zP
+  finally
+    " Restore the z register
+    call setreg("z", old_z, old_z_type)
+  endtry
+
+  " Configure the buffer
+  set filetype=diff noswapfile nomodified readonly
+  silent file [Changes\ to\ be\ committed]
+
+  " Get back to the commit message
+  wincmd p
+endfunction
