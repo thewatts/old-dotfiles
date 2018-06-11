@@ -3,15 +3,16 @@
   " Scheme Config
   " let g:myTheme = 'base16 - light'
   " let g:myTheme = 'base16 - cupcake'
-  let g:myTheme = 'base16 - ocean'
+  " let g:myTheme = 'base16 - ocean'
+  let g:myTheme = 'base16 - onedark'
   " let g:myTheme = 'gruvbox'
   " let g:myTheme = 'gruvbox - light'
+  " let g:myTheme = 'base16 - onelight'
   " let g:myTheme = 'nova'
 
 " use Vim settings, rather than Vi settings filetype off
   set nocompatible
   set encoding=utf-8  " Fix special character encoding
-
   call plug#begin()
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
     Plug 'junegunn/fzf.vim'
@@ -47,7 +48,9 @@
     Plug 'jparise/vim-graphql'             "graphql syntax
     Plug 'elixir-lang/vim-elixir'          " elixir
     Plug 'trevordmiller/nova-vim'
-    Plug 'joker1007/vim-ruby-heredoc-syntax'
+    Plug 'junegunn/goyo.vim'
+    Plug 'junegunn/limelight.vim'
+    " Plug 'joker1007/vim-ruby-heredoc-syntax'
     " Plug 'w0rp/ale'                        " code linting
     Plug 'benekastah/neomake'
     " Plug 'vim-syntastic/syntastic'
@@ -68,17 +71,17 @@
     filetype plugin on           " enable loading plugins for filetypes
     filetype indent on           " enable loading 'indent files' for filetypes
 
-    set synmaxcol=1000            " no syntax highlighting for lines longer than 400 cols
+    set synmaxcol=2000            " no syntax highlighting for lines longer than 400 cols
 
     set laststatus=2             " show status bar
 
     set number                   " display line numbers
-    set relativenumber           " show relative line numbers
+    " set relativenumber           " show relative line numbers
     set visualbell               " use visual bell
 
     set laststatus=2             " Fix for statusbar toggling
 
-    set cursorline               " show cursor line
+    " set cursorline               " show cursor line
     set ruler                    " cursor position in the lower right corner
 
     match ErrorMsg '\s\+$'       " highlight trailing whitespace
@@ -109,7 +112,7 @@
     set splitright " vsplit splits to right side
     set splitbelow " split splits to bottom
 
-    set synmaxcol=128
+    set synmaxcol=270
     syntax sync minlines=256
     " set nocul
 
@@ -150,6 +153,7 @@
     " for ruby
     autocmd FileType conf set filetype=ruby
     au BufNewFile,BufRead *.rb.example set filetype=ruby
+    au BufNewFile,BufRead *.axlsx set filetype=ruby
     let g:ruby_path = system('echo $HOME/.rbenv/shims')
 
     " git commit
@@ -157,6 +161,7 @@
 
     " env files
     au BufNewFile,BufRead *.development set filetype=sh
+    au BufNewFile,BufRead *.production set filetype=sh
 
   "- Tab ---------------------------------------------------------------------------------------------
     function! InsertTabWrapper()
@@ -238,6 +243,44 @@
       highlight GitGutterDelete guifg=#C4E78D guibg=#263238
 
       let g:airline_theme='base16_ocean'
+    elseif g:myTheme == 'base16 - onedark'
+      set background=dark
+      colorscheme base16-onedark
+      highlight CursorLineNr guifg=#EACA89 gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#343D46
+      highlight LineNr ctermbg=235 guibg=#2c303a
+      highlight VertSplit ctermbg=235 guibg=#2B303B
+
+      highlight hamlClass guifg=#ebcb8b
+      highlight hamlId guifg=#bf616a
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      let g:airline_theme='onedark'
+    elseif g:myTheme == 'base16 - onelight'
+      set background=dark
+      colorscheme base16-one-light
+      highlight CursorLineNr guifg=#fafafa gui=bold
+      highlight Search guifg=#FFFFFF guibg=#FC0D1B
+      highlight ColorColumn guibg=#ffffd6
+      highlight LineNr ctermbg=235 guibg=#fafafa
+      highlight VertSplit ctermbg=235 guibg=#fafafa
+
+      highlight hamlClass guifg=#ebcb8b
+      highlight hamlId guifg=#bf616a
+
+      highlight GitGutterAdd guifg=#C4E78D guibg=#263238
+      highlight GitGutterChange guifg=#C4E78D guibg=#263238
+      highlight GitGutterChangeDelete guifg=#C4E78D guibg=#263238
+      highlight GitGutterDelete guifg=#C4E78D guibg=#263238
+
+      let g:indentLine_color_gui = "#a0a0a6"
+
+      let g:airline_theme='onedark'
     elseif g:myTheme == 'gruvbox'
       set background=dark
       colorscheme gruvbox
@@ -278,7 +321,7 @@
 
 "= Keys ========================================================================
 
-  let mapleader = ','                       " set <Leader>
+  let mapleader = ' '                       " set <Leader> as <Space>
   set backspace=indent,eol,start            " make backspace behave as expected
 
   " easy splits and switches over (\v)
@@ -288,6 +331,9 @@
 
   " map escape key to jj -- much faster, comments above b/c of Vim's interpretation of them jumping my cursor
   imap jj <esc>
+
+  " disable line joining b/c of my fingers
+  nnoremap <S-j> <Nop>
 
   " search navigation
   nnoremap <Space>] :cn<cr>
@@ -320,7 +366,7 @@
   imap <c-l> <space>=><space>
 
   " insert a binding.pry under cursor
-  map <Leader>d orequire "pry"<cr>binding.pry<esc>:w<cr>
+  map <Leader>d orequire "pry"<cr>binding.pry<cr><esc>:w<cr>
   map <Leader>g odebugger;<esc>:w<cr>
   map <Leader>bb :term bundle install<cr>
 
@@ -332,6 +378,7 @@
   let g:vim_markdown_conceal = 0
   let g:vim_markdown_folding_disabled=1
   au BufRead,BufNewFile *.txt set filetype=markdown
+  au BufRead,BufNewFile *.md setlocal linebreak nolist tw=0 wrap wrapmargin=0 showbreak=↳\ ...
 
 "= NerdTree ====================================================================
 " toggle NerdTree (Control + b)
@@ -387,7 +434,7 @@ nmap <C-i><C-i> i<C-y>j<ESC>
 " only lint when file is saved
 " let g:ale_lint_on_text_changed = 'never'
 " let g:syntastic_haml_checkers = ['haml_lint']
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake
 
 "= Language Specific Settings===================================================
 
@@ -438,6 +485,25 @@ autocmd! BufWritePost * Neomake
   "- Elm
   au BufNewFile,BufRead *.elm set ft=elm
 
+" junegunn/limelight.vim
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+function! GoyoBefore()
+  set tw=0
+  Limelight
+  syntax off
+endfunction
+
+function! GoyoAfter()
+  set tw=0
+  Limelight!
+  syntax on
+endfunction
+
+let g:goyo_callbacks = [function('GoyoBefore'), function('GoyoAfter')]
+nnoremap <Leader>m :Goyo<CR>
+
 "= Enter Key ===================================================================
   function! MapCR()
     if (&ft=='c')
@@ -464,6 +530,16 @@ autocmd! BufWritePost * Neomake
   endfunction
 
   :nnoremap <cr> :call MapCR()<cr>
+
+"= Pry Load ===================================================================
+  function! PryLoad()
+    if (&ft=='ruby')
+      silent !clear
+      execute "! pry -r" . expand('%:p')
+    endif
+  endfunction
+
+  :nnoremap <leader>p :call PryLoad()<cr>
 
 "= Pretty JSON =================================================================
 " Requires 'jq' (brew install jq)
@@ -514,3 +590,7 @@ function OpenCommitMessageDiff()
   " Get back to the commit message
   wincmd p
 endfunction
+
+augroup filetypegroup
+    autocmd FileType php,twig setlocal ts=2 sts=2 sw=2
+augroup end
